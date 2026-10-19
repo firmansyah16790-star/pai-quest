@@ -1,0 +1,6 @@
+{
+  "name": "PAI Quest — Petualangan Ilmu dan Akhlak",
+  "description": "Aplikasi web pembelajaran Pendidikan Agama Islam interaktif untuk guru dan siswa kelas IV, V, dan VI SDN 32 Rantau Bayur oleh Firmansyah,S.H Gr.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

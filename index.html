@@ -1,0 +1,4268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAI Quest — Petualangan Ilmu dan Akhlak</title>
+  <meta name="description" content="Aplikasi web pembelajaran Pendidikan Agama Islam interaktif untuk guru dan siswa kelas IV, V, dan VI SDN 32 Rantau Bayur oleh Firmansyah,S.H Gr." />
+  <meta property="og:title" content="PAI Quest — Petualangan Ilmu dan Akhlak" />
+  <meta property="og:description" content="Aplikasi web pembelajaran Pendidikan Agama Islam interaktif untuk guru dan siswa kelas IV, V, dan VI SDN 32 Rantau Bayur oleh Firmansyah,S.H Gr." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style>
+    :root {
+      --primary-50: #ecfdf5;
+      --primary-100: #d1fae5;
+      --primary-200: #a7f3d0;
+      --primary-500: #10b981;
+      --primary-600: #059669;
+      --primary-700: #047857;
+      --primary-800: #065f46;
+      --primary-900: #064e3b;
+      
+      --gold-50: #fffbeb;
+      --gold-100: #fef3c7;
+      --gold-400: #fbbf24;
+      --gold-500: #f59e0b;
+      --gold-600: #d97706;
+      
+      --bg-main: #fcfbf7;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8f6f0;
+      
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      --border-color: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --danger: #ef4444;
+      --danger-dark: #dc2626;
+      --success: #10b981;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Layout structure */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 270px;
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 40;
+      transition: transform 0.25s ease-in-out;
+    }
+
+    .sidebar-header {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-700) 100%);
+      color: #ffffff;
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-400);
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 0.72rem;
+      color: var(--primary-100);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.18);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 14px 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .nav-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 12px 4px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 9px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn svg {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .nav-btn.active {
+      background: var(--primary-50);
+      color: var(--primary-700);
+      font-weight: 700;
+      border-left: 4px solid var(--primary-600);
+      padding-left: 8px;
+    }
+
+    .sidebar-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border-subtle);
+      background: #fafafa;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .sidebar-footer-author {
+      font-weight: 700;
+      color: var(--primary-800);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Main Content Area */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg-main);
+    }
+
+    .top-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .header-title-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary-900);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: var(--primary-50);
+      color: var(--primary-700);
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid var(--primary-200);
+    }
+
+    .header-btn-quick {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-600);
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .header-btn-quick:hover {
+      background: var(--primary-700);
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 24px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Views container */
+    .view-section {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card Styling */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 16px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary-600);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-700);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-subtle);
+      border-color: #cbd5e1;
+    }
+
+    .btn-gold {
+      background: var(--gold-500);
+      color: #ffffff;
+    }
+    .btn-gold:hover {
+      background: var(--gold-600);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: var(--danger-dark);
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      border-radius: 6px;
+    }
+
+    .btn-lg {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: var(--radius-md);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    /* Dashboard Stats Cards */
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 26px 30px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .welcome-banner::after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .welcome-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .welcome-subtitle {
+      font-size: 0.92rem;
+      color: var(--primary-100);
+      max-width: 680px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .welcome-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Forms & Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      background: #ffffff;
+      color: var(--text-main);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .form-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.86rem;
+    }
+
+    th {
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #fafbfc;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .badge-emerald {
+      background: var(--primary-100);
+      color: var(--primary-800);
+    }
+
+    .badge-gold {
+      background: var(--gold-100);
+      color: var(--gold-600);
+    }
+
+    .badge-blue {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .badge-purple {
+      background: #f3e8ff;
+      color: #7e22ce;
+    }
+
+    .badge-gray {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    /* Search & Filter toolbar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      background: #ffffff;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-input-wrap svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      width: 16px;
+      height: 16px;
+    }
+
+    .search-input-wrap input {
+      padding-left: 34px;
+    }
+
+    /* Live Classroom Projector Interface */
+    .live-classroom-container {
+      background: #0f172a;
+      color: #ffffff;
+      min-height: 80vh;
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .live-classroom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .live-badge-session {
+      font-size: 0.82rem;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid var(--primary-500);
+      color: #6ee7b7;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+    }
+
+    .live-timer-box {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold-400);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      padding: 6px 18px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .live-timer-box.urgent {
+      color: #f87171;
+      border-color: #ef4444;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .live-question-box {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .live-meta-tag {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .live-question-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #ffffff;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .live-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .live-option-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      padding: 18px 22px;
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .live-option-btn:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .live-option-btn.selected {
+      border-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.25);
+    }
+
+    .live-option-btn.correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.3) !important;
+      color: #6ee7b7 !important;
+    }
+
+    .live-option-btn.wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.3) !important;
+      color: #fca5a5 !important;
+    }
+
+    .option-key-label {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .live-explanation-box {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #d1fae5;
+      display: none;
+    }
+
+    .live-controls-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Battle Quiz Teams */
+    .battle-teams-panel {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .battle-team-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .battle-team-card.lead {
+      border-color: var(--gold-400);
+      background: rgba(245, 158, 11, 0.15);
+    }
+
+    .team-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 4px;
+    }
+
+    .team-score {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold-400);
+    }
+
+    /* Islamic Adventure Progress */
+    .adventure-tracker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .adventure-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      flex: 1;
+    }
+
+    .adventure-stage:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 55%;
+      width: 90%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      z-index: 1;
+    }
+
+    .adventure-stage.completed:not(:last-child)::after {
+      background: var(--gold-500);
+    }
+
+    .stage-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      z-index: 2;
+      border: 2px solid transparent;
+    }
+
+    .adventure-stage.active .stage-icon {
+      border-color: var(--gold-400);
+      background: var(--gold-600);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+    }
+
+    .adventure-stage.completed .stage-icon {
+      background: var(--primary-600);
+      color: #ffffff;
+    }
+
+    .stage-title {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    /* Modal System */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(10px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-overlay.active .modal-dialog {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .modal-close:hover {
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast-message {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+      animation: slideIn 0.2s ease;
+      border-left: 4px solid var(--primary-500);
+      max-width: 360px;
+    }
+
+    .toast-message.error {
+      border-left-color: var(--danger);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Print styling */
+    @media print {
+      .sidebar, .top-header, .filter-bar, .btn, .no-print {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .content-area {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .live-options-grid { grid-template-columns: 1fr; }
+      .battle-teams-panel { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .mobile-menu-toggle {
+        display: block;
+      }
+      .content-area {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar" id="appSidebar">
+    <div class="sidebar-header">
+      <div class="brand-title-wrap">
+        <div class="brand-icon">
+          <!-- Moslem Dome SVG -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.9 2.5a6 6 0 0 0-1.1 3.5V11a2 2 0 0 1-2 2H5a2 2 0 0 0-2 2v6h18v-6a2 2 0 0 0-2-2h-2a2 2 0 0 1-2-2V9a6 6 0 0 0-1.1-3.5L12 3z"/>
+            <path d="M12 2v1"/>
+            <path d="M10 21v-4a2 2 0 1 1 4 0v4"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-name">PAI Quest</h1>
+          <div class="brand-tagline">Petualangan Ilmu & Akhlak</div>
+        </div>
+      </div>
+      <div class="brand-badge">SDN 32 Rantau Bayur</div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav" aria-label="Menu Utama">
+      <div class="nav-category">Navigasi Utama</div>
+      
+      <button class="nav-btn active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        Dashboard
+      </button>
+
+      <button class="nav-btn" data-view="classes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Kelas & Siswa
+      </button>
+
+      <button class="nav-btn" data-view="materials">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+        Materi PAI
+      </button>
+
+      <button class="nav-btn" data-view="questions">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+        Bank Soal
+      </button>
+
+      <div class="nav-category">Aktivitas Kelas</div>
+
+      <button class="nav-btn" data-view="gamestudio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+        Game Studio
+      </button>
+
+      <button class="nav-btn" data-view="liveclassroom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Live Classroom
+      </button>
+
+      <button class="nav-btn" data-view="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        Hasil & Laporan
+      </button>
+
+      <div class="nav-category">Fitur Cerdas & Sistem</div>
+
+      <button class="nav-btn" data-view="aiassistant">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        AI Teaching Assistant
+      </button>
+
+      <button class="nav-btn" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Pengaturan
+      </button>
+
+      <button class="nav-btn" data-view="about">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Tentang Aplikasi
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div>Dikembangkan oleh:</div>
+      <div class="sidebar-footer-author">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Firmansyah,S.H Gr
+      </div>
+      <div style="font-size: 0.68rem; color: #94a3b8; margin-top: 2px;">PAI SDN 32 Rantau Bayur</div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="main-wrapper">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Buka Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+        </button>
+        <span class="header-title-text" id="pageTitleText">Dashboard</span>
+      </div>
+
+      <div class="header-right">
+        <div class="header-chip" id="topDateBadge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          <span id="currentDateDisplay">Memuat tanggal...</span>
+        </div>
+        <button class="header-btn-quick" id="quickStartGameBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Mulai Game
+        </button>
+      </div>
+    </header>
+
+    <main class="content-area">
+      <!-- 1. DASHBOARD VIEW -->
+      <section id="view-dashboard" class="view-section active">
+        <div class="welcome-banner">
+          <h2 class="welcome-title">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
+          <p class="welcome-subtitle">
+            Selamat datang di <strong>PAI Quest</strong>, platform interaktif pendukung guru Pendidikan Agama Islam di SDN 32 Rantau Bayur untuk menciptakan suasana kelas yang ceria, aktif, dan berakhlak mulia.
+          </p>
+          <div class="welcome-actions">
+            <button class="btn btn-gold" id="btnDashNewQuiz">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Mulai Sesi Game Baru
+            </button>
+            <button class="btn btn-secondary" id="btnDashAddQuestion" style="color: #ffffff; background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+              Tambah Soal Baru
+            </button>
+            <button class="btn btn-secondary" id="btnDashAiAssistant" style="color: #ffffff; background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+              Buka Asisten AI
+            </button>
+          </div>
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="grid-4" style="margin-bottom: 24px;">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper" style="background: var(--primary-100); color: var(--primary-700);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+            </div>
+            <div>
+              <div class="stat-val" id="statTotalClasses">0</div>
+              <div class="stat-label">Kelas Terbina (IV, V, VI)</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper" style="background: #e0f2fe; color: #0284c7;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </div>
+            <div>
+              <div class="stat-val" id="statTotalStudents">0</div>
+              <div class="stat-label">Siswa Aktif</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper" style="background: var(--gold-100); color: var(--gold-600);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div class="stat-val" id="statTotalQuestions">0</div>
+              <div class="stat-label">Bank Soal Terverifikasi</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-wrapper" style="background: #f3e8ff; color: #7e22ce;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <div class="stat-val" id="statTotalSessions">0</div>
+              <div class="stat-label">Sesi Game Tuntas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Recent Sessions Activity -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Aktivitas Pembelajaran Terakhir
+              </h3>
+              <button class="btn btn-secondary btn-sm" id="btnDashViewAllReports">Lihat Semua</button>
+            </div>
+            <div id="dashRecentActivityList">
+              <!-- Dynamically populated or empty message -->
+            </div>
+          </div>
+
+          <!-- Quick Guide / Tips Guru -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                Petunjuk Cepat Penggunaan Guru
+              </h3>
+              <span class="badge badge-emerald">Lokal & Offline</span>
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+              <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>1. Siapkan Kelas:</strong> Atur siswa kelas IV, V, atau VI pada menu <em>Kelas & Siswa</em>.</li>
+                <li><strong>2. Pilih/Tambah Soal:</strong> Gunakan materi dan bank soal siap pakai yang terbagi per jenjang dan tema PAI.</li>
+                <li><strong>3. Buka Game Studio:</strong> Pilih mode interaktif (Quiz Challenge, Battle Quiz beregu, atau Petualangan Islam) lalu jalankan di <em>Live Classroom</em> dengan proyektor.</li>
+                <li><strong>4. Pantau Hasil:</strong> Evaluasi ketuntasan belajar secara otomatis tanpa perlu mengoreksi manual di menu <em>Hasil & Laporan</em>.</li>
+              </ul>
+              <div style="margin-top: 16px; padding: 12px; background: var(--bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-600);">
+                <strong>Catatan Pengembang:</strong> Seluruh data tersimpan aman di browser perangkat Anda melalui <code>LocalStorage</code>. Anda dapat mengekspor cadangan di menu <em>Pengaturan</em> kapan saja.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. KELAS & SISWA VIEW -->
+      <section id="view-classes" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Pengelolaan Kelas & Siswa</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Kelola daftar peserta didik kelas IV, V, dan VI SDN 32 Rantau Bayur</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" id="btnExportStudentsCsv">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Ekspor Siswa CSV
+              </button>
+              <button class="btn btn-primary btn-sm" id="btnOpenAddStudentModal">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                Tambah Siswa
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btnOpenAddClassModal">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                Tambah Kelas
+              </button>
+              <button class="btn btn-danger btn-sm" id="btnDeleteCurrentClass" onclick="window.PAIApp.deleteCurrentActiveClass()" title="Hapus kelas yang sedang aktif">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Hapus Kelas <span id="labelCurrentActiveClass"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Class Tabs Selector -->
+          <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;" id="classTabsContainer">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- Filter & Search Toolbar -->
+          <div class="filter-bar">
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              <input type="text" class="form-input" id="searchStudentInput" placeholder="Cari nama atau NIS siswa..." />
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">
+              Total: <span id="studentCountBadge" style="color: var(--primary-700);">0</span> Siswa
+            </div>
+          </div>
+
+          <!-- Students Table -->
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>NIS / Kode</th>
+                  <th>Nama Lengkap</th>
+                  <th>Kelas</th>
+                  <th>Total XP</th>
+                  <th>Lencana (Badges)</th>
+                  <th style="text-align: right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="studentTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. MATERI PAI VIEW -->
+      <section id="view-materials" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Katalog Materi PAI (Kurikulum Terpadu)</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Cakupan Al-Qur'an Hadis, Akidah, Akhlak, Fikih, dan Sejarah Peradaban Islam</div>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btnOpenAddMaterialModal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+              Tambah Materi Baru
+            </button>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              <input type="text" class="form-input" id="searchMaterialInput" placeholder="Cari judul materi, topik, atau kata kunci..." />
+            </div>
+            <select class="form-select" id="filterMaterialClass" style="width: 140px;">
+              <option value="">Semua Kelas</option>
+              <option value="Kelas IV">Kelas IV</option>
+              <option value="Kelas V">Kelas V</option>
+              <option value="Kelas VI">Kelas VI</option>
+            </select>
+            <select class="form-select" id="filterMaterialCategory" style="width: 180px;">
+              <option value="">Semua Kategori</option>
+              <option value="Al-Qur'an & Hadis">Al-Qur'an & Hadis</option>
+              <option value="Akidah">Akidah</option>
+              <option value="Akhlak">Akhlak</option>
+              <option value="Fikih & Ibadah">Fikih & Ibadah</option>
+              <option value="Sejarah Peradaban Islam">Sejarah Peradaban Islam</option>
+            </select>
+          </div>
+
+          <div class="grid-3" id="materialsGridContainer">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. BANK SOAL VIEW -->
+      <section id="view-questions" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Bank Soal PAI Terpadu</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Kelola soal pilihan ganda dan benar/salah beserta kunci jawaban dan pembahasan</div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" id="btnExportQuestionsJson">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Ekspor JSON
+              </button>
+              <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                Impor JSON
+                <input type="file" id="inputImportQuestionsJson" accept=".json" style="display: none;" />
+              </label>
+              <button class="btn btn-primary btn-sm" id="btnOpenAddQuestionModal">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                Tambah Soal Baru
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              <input type="text" class="form-input" id="searchQuestionInput" placeholder="Cari pertanyaan atau kata kunci pembahasan..." />
+            </div>
+            <select class="form-select" id="filterQuestionClass" style="width: 140px;">
+              <option value="">Semua Kelas</option>
+              <option value="Kelas IV">Kelas IV</option>
+              <option value="Kelas V">Kelas V</option>
+              <option value="Kelas VI">Kelas VI</option>
+            </select>
+            <select class="form-select" id="filterQuestionDifficulty" style="width: 140px;">
+              <option value="">Semua Kesulitan</option>
+              <option value="Mudah">Mudah</option>
+              <option value="Sedang">Sedang</option>
+              <option value="Sulit">Sulit</option>
+            </select>
+            <button class="btn btn-gold btn-sm" id="btnCreateGameFromSelected">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Buat Game dari Pilihan (<span id="selectedQuestionsCount">0</span>)
+            </button>
+          </div>
+
+          <div id="questionsListContainer" style="display: flex; flex-direction: column; gap: 14px;">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. GAME STUDIO VIEW -->
+      <section id="view-gamestudio" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Game Studio — Persiapan Sesi Interaktif</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Konfigurasikan judul permainan, mode game, durasi, dan pilihan bank soal</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Left: Settings Form -->
+            <div>
+              <div class="form-group">
+                <label class="form-label">Judul Sesi Permainan</label>
+                <input type="text" class="form-input" id="gameConfigTitle" value="Tantangan PAI Ceria Pekan Ini" placeholder="Contoh: Kuis Asmaul Husna Kelas IV" />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Target Kelas</label>
+                  <select class="form-select" id="gameConfigClass">
+                    <option value="Kelas IV">Kelas IV</option>
+                    <option value="Kelas V">Kelas V</option>
+                    <option value="Kelas VI">Kelas VI</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Durasi Waktu Per Soal</label>
+                  <select class="form-select" id="gameConfigTimer">
+                    <option value="30">30 Detik (Standar)</option>
+                    <option value="45">45 Detik (Santai)</option>
+                    <option value="20">20 Detik (Tangkas)</option>
+                    <option value="0">Tanpa Timer (Bebas)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Mode Pembahasan Jawaban</label>
+                <select class="form-select" id="gameConfigFeedback">
+                  <option value="instant">Tampilkan pembahasan langsung setelah tiap soal</option>
+                  <option value="end">Tampilkan rekap dan pembahasan di akhir sesi</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Pilih Mode Permainan Interaktif</label>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+                  <label style="display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; background: var(--bg-card);" class="game-mode-opt">
+                    <input type="radio" name="gameMode" value="quiz_challenge" checked style="margin-top: 3px;" />
+                    <div>
+                      <strong style="color: var(--primary-800); font-size: 0.92rem;">A. Quiz Challenge (Klasik & Proyektor)</strong>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Pilihan ganda dengan papan skor, indikator kemajuan, dan pembahasan interaktif untuk seluruh kelas.</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; background: var(--bg-card);" class="game-mode-opt">
+                    <input type="radio" name="gameMode" value="battle_quiz" style="margin-top: 3px;" />
+                    <div>
+                      <strong style="color: var(--gold-600); font-size: 0.92rem;">B. Battle Quiz (Cerdas Cermat Regu)</strong>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Kompetisi antar regu: Regu Abu Bakar, Umar, Utsman, dan Ali dengan papan skor langsung.</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; background: var(--bg-card);" class="game-mode-opt">
+                    <input type="radio" name="gameMode" value="islamic_adventure" style="margin-top: 3px;" />
+                    <div>
+                      <strong style="color: var(--accent-purple); font-size: 0.92rem;">C. Islamic Adventure (Petualangan Hikmah)</strong>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Jelajahi 5 kota bersejarah (Makkah, Madinah, Kufah, Baghdad, Cordoba) dengan menuntaskan misi ilmu.</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; background: var(--bg-card);" class="game-mode-opt">
+                    <input type="radio" name="gameMode" value="akhlak_scenario" style="margin-top: 3px;" />
+                    <div>
+                      <strong style="color: #0284c7; font-size: 0.92rem;">D. Choose the Best Action (Skenario Akhlak)</strong>
+                      <div style="font-size: 0.78rem; color: var(--text-muted);">Tantangan situasi keseharian anak untuk memilih tindakan paling santun, jujur, dan bijaksana.</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Questions Selection for Game -->
+            <div style="display: flex; flex-direction: column;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label class="form-label" style="margin-bottom: 0;">Pilih Soal yang Digunakan (<span id="gameStudioSelectedCount">0</span> terpilih)</label>
+                <button class="btn btn-secondary btn-sm" id="btnSelectAllClassQuestions">Pilih Semua Soal Kelas</button>
+              </div>
+              <div id="gameStudioQuestionList" style="flex: 1; max-height: 420px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px; background: var(--bg-subtle); display: flex; flex-direction: column; gap: 8px;">
+                <!-- Populated via JS based on class -->
+              </div>
+
+              <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" id="btnPreviewGameConfig">Periksa Ringkasan</button>
+                <button class="btn btn-gold btn-lg" id="btnLaunchLiveGame">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Luncurkan ke Live Classroom
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. LIVE CLASSROOM VIEW (FULL SCREEN / PROJECTOR) -->
+      <section id="view-liveclassroom" class="view-section">
+        <div class="live-classroom-container" id="liveContainer">
+          <!-- Session Header -->
+          <div class="live-classroom-header">
+            <div>
+              <div class="live-badge-session" id="liveModeBadge">Quiz Challenge</div>
+              <h2 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin-top: 4px;" id="liveSessionTitleDisplay">Tantangan PAI Ceria</h2>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <!-- Timer Box -->
+              <div class="live-timer-box" id="liveTimerBox">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="liveTimerSeconds">30</span>s
+              </div>
+              <!-- Fullscreen button -->
+              <button class="btn btn-secondary btn-sm" id="btnToggleFullScreen" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #ffffff;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                Layar Penuh
+              </button>
+              <button class="btn btn-danger btn-sm" id="btnExitLiveSession">
+                Keluar
+              </button>
+            </div>
+          </div>
+
+          <!-- Battle Mode Teams Scoreboard (Only if Battle Mode) -->
+          <div class="battle-teams-panel" id="liveBattleTeamsPanel" style="display: none;">
+            <div class="battle-team-card" id="teamCard1">
+              <div class="team-name">Regu Abu Bakar</div>
+              <div class="team-score" id="teamScore1">0</div>
+              <div style="margin-top: 4px;">
+                <button class="btn btn-sm btn-primary" onclick="window.PAIApp.addTeamPoint(0, 10)">+10</button>
+              </div>
+            </div>
+            <div class="battle-team-card" id="teamCard2">
+              <div class="team-name">Regu Umar</div>
+              <div class="team-score" id="teamScore2">0</div>
+              <div style="margin-top: 4px;">
+                <button class="btn btn-sm btn-primary" onclick="window.PAIApp.addTeamPoint(1, 10)">+10</button>
+              </div>
+            </div>
+            <div class="battle-team-card" id="teamCard3">
+              <div class="team-name">Regu Utsman</div>
+              <div class="team-score" id="teamScore3">0</div>
+              <div style="margin-top: 4px;">
+                <button class="btn btn-sm btn-primary" onclick="window.PAIApp.addTeamPoint(2, 10)">+10</button>
+              </div>
+            </div>
+            <div class="battle-team-card" id="teamCard4">
+              <div class="team-name">Regu Ali</div>
+              <div class="team-score" id="teamScore4">0</div>
+              <div style="margin-top: 4px;">
+                <button class="btn btn-sm btn-primary" onclick="window.PAIApp.addTeamPoint(3, 10)">+10</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Adventure Tracker (Only if Adventure Mode) -->
+          <div class="adventure-tracker" id="liveAdventureTracker" style="display: none;">
+            <div class="adventure-stage active" id="advStage1">
+              <div class="stage-icon">🕌</div>
+              <div class="stage-title">Makkah</div>
+            </div>
+            <div class="adventure-stage" id="advStage2">
+              <div class="stage-icon">🌴</div>
+              <div class="stage-title">Madinah</div>
+            </div>
+            <div class="adventure-stage" id="advStage3">
+              <div class="stage-icon">📖</div>
+              <div class="stage-title">Kufah</div>
+            </div>
+            <div class="adventure-stage" id="advStage4">
+              <div class="stage-icon">✨</div>
+              <div class="stage-title">Baghdad</div>
+            </div>
+            <div class="adventure-stage" id="advStage5">
+              <div class="stage-icon">⭐</div>
+              <div class="stage-title">Cordoba</div>
+            </div>
+          </div>
+
+          <!-- Active Question Area -->
+          <div id="liveActiveQuestionArea">
+            <div class="live-question-box">
+              <div class="live-meta-tag" id="liveQuestionMeta">Soal 1 dari 5 • Tingkat: Sedang • Bobot: 10 Poin</div>
+              <div class="live-question-text" id="liveQuestionText">Memuat pertanyaan...</div>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="live-options-grid" id="liveOptionsContainer">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Explanation Box -->
+            <div class="live-explanation-box" id="liveExplanationBox">
+              <strong>Penjelasan Guru & Hikmah:</strong>
+              <div id="liveExplanationText" style="margin-top: 4px;"></div>
+            </div>
+          </div>
+
+          <!-- Finished Results Summary Screen (Initially hidden) -->
+          <div id="liveSessionFinishScreen" style="display: none; text-align: center; padding: 30px 10px;">
+            <div style="font-size: 3.5rem; margin-bottom: 12px;" id="liveFinishIcon">🎉</div>
+            <h2 style="font-size: 2rem; font-weight: 800; color: #ffffff;" id="liveFinishTitle">Sesi Pembelajaran Tuntas!</h2>
+            <p style="color: #cbd5e1; font-size: 1rem; max-width: 600px; margin: 8px auto 24px;" id="liveFinishSubtitle">
+              Alhamdulillah! Seluruh siswa telah berpartisipasi dengan luar biasa dalam mengasah ilmu dan akhlak mulia.
+            </p>
+
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
+              <div style="background: rgba(255,255,255,0.08); padding: 18px 26px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.15);">
+                <div style="font-size: 2.2rem; font-weight: 800; color: var(--gold-400);" id="liveFinishFinalScore">100</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Nilai Sesi</div>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.08); padding: 18px 26px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.15);">
+                <div style="font-size: 2.2rem; font-weight: 800; color: #34d399;" id="liveFinishCorrectRatio">5 / 5</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Jawaban Tepat</div>
+              </div>
+
+              <div style="background: rgba(255,255,255,0.08); padding: 18px 26px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.15);">
+                <div style="font-size: 2.2rem; font-weight: 800; color: #60a5fa;" id="liveFinishTotalXp">+70 XP</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Poin Pengalaman (XP)</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 12px;">
+              <button class="btn btn-secondary" id="btnLiveSaveAndReview">Lihat Rekap Lengkap</button>
+              <button class="btn btn-gold" id="btnLiveRestartSession">Mulai Sesi Lain</button>
+            </div>
+          </div>
+
+          <!-- Bottom Footer Navigation Controls -->
+          <div class="live-controls-footer" id="liveControlsFooter">
+            <div style="font-size: 0.88rem; color: #94a3b8;" id="liveProgressIndicator">
+              Soal 1 dari 5
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary btn-sm" id="btnLivePauseTimer" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #ffffff;">
+                Jeda Timer
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btnLivePrevQuestion" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #ffffff;">
+                Soal Sebelumnya
+              </button>
+              <button class="btn btn-primary btn-sm" id="btnLiveRevealAnswer" style="background: #059669; color: #ffffff;">
+                Periksa Kunci
+              </button>
+              <button class="btn btn-gold btn-sm" id="btnLiveNextQuestion">
+                Soal Berikutnya &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. HASIL & LAPORAN VIEW -->
+      <section id="view-reports" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Rekapitulasi Hasil & Laporan Ketuntasan</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Analisis capaian kompetensi siswa tanpa label yang mengecilkan hati anak</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" id="btnPrintReportBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                Cetak Laporan
+              </button>
+              <button class="btn btn-primary btn-sm" id="btnExportReportsCsv">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Ekspor Riwayat CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div class="grid-3" style="margin-bottom: 20px;">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper" style="background: var(--primary-100); color: var(--primary-800);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <div class="stat-val" id="reportRataRataNilai">0</div>
+                <div class="stat-label">Rata-rata Nilai Keseluruhan</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrapper" style="background: var(--gold-100); color: var(--gold-600);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              </div>
+              <div>
+                <div class="stat-val" id="reportKetuntasanPersen">0%</div>
+                <div class="stat-label">Tingkat Ketuntasan Kelas</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrapper" style="background: #e0f2fe; color: #0284c7;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+              </div>
+              <div>
+                <div class="stat-val" id="reportTotalSesiSelesai">0</div>
+                <div class="stat-label">Total Sesi Tercatat</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History Table -->
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: var(--text-main);">Daftar Riwayat Sesi Permainan</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tanggal & Jam</th>
+                  <th>Judul Sesi</th>
+                  <th>Kelas</th>
+                  <th>Mode Game</th>
+                  <th>Jumlah Soal</th>
+                  <th>Skor Rata-rata</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="reportSessionsTableBody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. AI TEACHING ASSISTANT VIEW -->
+      <section id="view-aiassistant" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                AI Teaching Assistant (Gemini) — Fitur Opsional
+              </h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Bantu guru menyusun draf soal, rancangan kegiatan seru, dan rencana remidial</div>
+            </div>
+            <div id="aiStatusBadge" class="badge badge-gray">AI Belum Dikonfigurasi</div>
+          </div>
+
+          <!-- API Key Advisory Box -->
+          <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <strong style="font-size: 0.88rem; color: var(--primary-900);">Pengaturan Gemini API Key (Opsional & Tersimpan Lokal di Browser)</strong>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                  Aplikasi dapat berjalan 100% normal tanpa API key. Jika Anda memiliki API key gratis dari Google AI Studio, Anda dapat memasukkannya di bawah ini.
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <input type="password" class="form-input" id="inputGeminiApiKey" placeholder="Masukkan Gemini API Key..." style="width: 260px;" />
+                <button class="btn btn-primary btn-sm" id="btnSaveGeminiKey">Simpan Key</button>
+                <button class="btn btn-secondary btn-sm" id="btnClearGeminiKey">Hapus</button>
+              </div>
+            </div>
+            <div style="font-size: 0.72rem; color: #b45309; margin-top: 8px;">
+              * Peringatan Keamanan: Kunci disimpan secara lokal di LocalStorage browser perangkat Anda. Jangan gunakan di komputer publik yang dibagikan.
+            </div>
+          </div>
+
+          <!-- AI Feature Tabs -->
+          <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+            <button class="btn btn-secondary btn-sm active" id="tabAiQuiz" onclick="window.PAIApp.switchAiTab('quiz')">1. AI Quiz Generator</button>
+            <button class="btn btn-secondary btn-sm" id="tabAiActivity" onclick="window.PAIApp.switchAiTab('activity')">2. AI Activity Planner</button>
+            <button class="btn btn-secondary btn-sm" id="tabAiRemedial" onclick="window.PAIApp.switchAiTab('remedial')">3. AI Remedial Generator</button>
+            <button class="btn btn-secondary btn-sm" id="tabAiSummary" onclick="window.PAIApp.switchAiTab('summary')">4. AI Learning Summary</button>
+          </div>
+
+          <!-- AI Tab 1: Quiz Generator -->
+          <div id="aiPanelQuiz">
+            <div class="grid-3" style="margin-bottom: 14px;">
+              <div class="form-group">
+                <label class="form-label">Kelas</label>
+                <select class="form-select" id="aiQuizClass">
+                  <option value="Kelas IV">Kelas IV</option>
+                  <option value="Kelas V">Kelas V</option>
+                  <option value="Kelas VI">Kelas VI</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Materi / Topik Pembahasan</label>
+                <input type="text" class="form-input" id="aiQuizTopic" value="Asmaul Husna: Al-Malik dan Al-Quddus" placeholder="Contoh: Ketentuan Zakat Fitrah" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Jumlah Soal</label>
+                <select class="form-select" id="aiQuizCount">
+                  <option value="3">3 Soal (Cepat)</option>
+                  <option value="5">5 Soal (Standar)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <button class="btn btn-primary" id="btnRunAiGenerateQuiz">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                Buat Draf Soal Otomatis
+              </button>
+              <span id="aiLoadingIndicator" style="display: none; margin-left: 12px; font-size: 0.82rem; color: var(--primary-700);">
+                Sedang memproses draf soal dengan AI...
+              </span>
+            </div>
+
+            <div id="aiQuizResultsContainer" style="display: none; border-top: 1px solid var(--border-color); padding-top: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--primary-900);">Draf Soal AI (Harap Verifikasi Kunci & Bahasa Guru)</h4>
+                <button class="btn btn-gold btn-sm" id="btnSaveAiQuizToBank">Simpan Semua ke Bank Soal</button>
+              </div>
+              <div id="aiQuizListOutput" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            </div>
+          </div>
+
+          <!-- AI Tab 2: Activity Planner -->
+          <div id="aiPanelActivity" style="display: none;">
+            <div class="grid-2" style="margin-bottom: 14px;">
+              <div class="form-group">
+                <label class="form-label">Topik Materi</label>
+                <input type="text" class="form-input" id="aiActivityTopic" value="Saling Menghargai dan Keberagaman dalam Islam" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Alokasi Waktu Pembelajaran</label>
+                <select class="form-select" id="aiActivityDuration">
+                  <option value="2x35 menit">2 x 35 Menit (1 Pertemuan)</option>
+                  <option value="1x35 menit">1 x 35 Menit (Penguatan)</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btnRunAiGenerateActivity">Buat Ide Skenario Kegiatan Pembuka & Refleksi</button>
+            <div id="aiActivityOutput" style="margin-top: 16px; background: var(--bg-subtle); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: none; line-height: 1.6; font-size: 0.88rem;"></div>
+          </div>
+
+          <!-- AI Tab 3: Remedial Generator -->
+          <div id="aiPanelRemedial" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Topik yang Perlu Diperkuat (Remidial)</label>
+              <input type="text" class="form-input" id="aiRemedialTopic" value="Rukun Iman dan Pembagian Takdir (Qada dan Qadar)" />
+            </div>
+            <button class="btn btn-primary" id="btnRunAiGenerateRemedial">Buat Soal Latihan Penguatan Remidial</button>
+            <div id="aiRemedialOutput" style="margin-top: 16px; background: var(--bg-subtle); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: none; line-height: 1.6; font-size: 0.88rem;"></div>
+          </div>
+
+          <!-- AI Tab 4: Learning Summary -->
+          <div id="aiPanelSummary" style="display: none;">
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+              AI akan menganalisis data statistik agregat kelas (tanpa mengirimkan nama pribadi siswa) untuk menyusun rekomendasi metode ajar berikutnya.
+            </p>
+            <button class="btn btn-primary" id="btnRunAiGenerateSummary">Buat Ringkasan Analisis Capaian Kelas</button>
+            <div id="aiSummaryOutput" style="margin-top: 16px; background: var(--bg-subtle); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: none; line-height: 1.6; font-size: 0.88rem;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. PENGATURAN VIEW -->
+      <section id="view-settings" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Pengaturan Aplikasi & Penyimpanan Data</h2>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Kelola profil pengajar, preferensi audio, dan cadangan data lokal</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- Profil & Tampilan -->
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-900);">Profil Pengajar & Sekolah</h3>
+              
+              <div class="form-group">
+                <label class="form-label">Nama Pengembang & Pengajar</label>
+                <input type="text" class="form-input" id="settingTeacherName" value="Firmansyah,S.H Gr" readonly style="background: #f1f5f9; cursor: not-allowed;" />
+                <div class="form-hint">Nama pengembang resmi aplikasi: Firmansyah,S.H Gr</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Nama Satuan Pendidikan</label>
+                <input type="text" class="form-input" id="settingSchoolName" value="SDN 32 Rantau Bayur" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Pilihan Kelas Standar</label>
+                <select class="form-select" id="settingDefaultClass">
+                  <option value="Kelas IV">Kelas IV</option>
+                  <option value="Kelas V">Kelas V</option>
+                  <option value="Kelas VI">Kelas VI</option>
+                </select>
+              </div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-top: 24px; margin-bottom: 12px; color: var(--primary-900);">Preferensi Pengalaman Belajar</h3>
+
+              <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-subtle);">
+                <div>
+                  <strong>Efek Suara Sintetis (Web Audio)</strong>
+                  <div class="form-hint">Nada ceria saat jawaban tepat dan bel lembut</div>
+                </div>
+                <input type="checkbox" id="settingEnableAudio" checked style="width: 18px; height: 18px; accent-color: var(--primary-600);" />
+              </div>
+
+              <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-subtle);">
+                <div>
+                  <strong>Animasi & Perayaan Bintang</strong>
+                  <div class="form-hint">Efek transisi ceria untuk menyemangati siswa</div>
+                </div>
+                <input type="checkbox" id="settingEnableAnimation" checked style="width: 18px; height: 18px; accent-color: var(--primary-600);" />
+              </div>
+
+              <div style="margin-top: 16px;">
+                <button class="btn btn-primary" id="btnSaveGeneralSettings">Simpan Pengaturan</button>
+              </div>
+            </div>
+
+            <!-- Cadangan & Pemulihan -->
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-900);">Manajemen Penyimpanan Lokal (LocalStorage)</h3>
+              
+              <div style="background: var(--bg-subtle); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 20px;">
+                <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+                  Semua kelas, bank soal, dan hasil tersimpan di ruang penyimpanan browser Anda (<strong>paiQuestDataV1</strong>).
+                </div>
+                
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button class="btn btn-secondary btn-sm" id="btnExportFullBackupJson">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    Cadangkan Seluruh Data (JSON)
+                  </button>
+
+                  <label class="btn btn-secondary btn-sm" style="cursor: pointer; margin: 0;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    Pulihkan dari Cadangan
+                    <input type="file" id="inputRestoreBackupJson" accept=".json" style="display: none;" />
+                  </label>
+                </div>
+              </div>
+
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--danger-dark);">Area Bahaya</h3>
+              <div style="border: 1px solid #fecaca; background: #fef2f2; padding: 16px; border-radius: var(--radius-md);">
+                <div style="font-size: 0.82rem; color: #991b1b; margin-bottom: 12px;">
+                  Tindakan ini tidak dapat dibatalkan. Pastikan Anda telah membuat cadangan sebelum menyetel ulang.
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button class="btn btn-danger btn-sm" id="btnResetDemoData">
+                    Kembalikan ke Data Simulasi Demo Awal
+                  </button>
+                  <button class="btn btn-danger btn-sm" id="btnClearAllData">
+                    Hapus Seluruh Data Aplikasi
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. TENTANG APLIKASI VIEW -->
+      <section id="view-about" class="view-section">
+        <div class="card">
+          <div style="text-align: center; max-width: 720px; margin: 0 auto; padding: 20px 0;">
+            <div style="width: 64px; height: 64px; background: var(--primary-100); color: var(--primary-700); border-radius: var(--radius-lg); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 2.5a6 6 0 0 0-1.1 3.5V11a2 2 0 0 1-2 2H5a2 2 0 0 0-2 2v6h18v-6a2 2 0 0 0-2-2h-2a2 2 0 0 1-2-2V9a6 6 0 0 0-1.1-3.5L12 3z"/></svg>
+            </div>
+            
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--primary-900);">PAI Quest — Petualangan Ilmu dan Akhlak</h2>
+            <div style="font-size: 0.95rem; font-weight: 600; color: var(--gold-600); margin-top: 4px;">Versi 1.0 (MVP Edisi Pembelajaran Ramah Anak)</div>
+
+            <div style="margin: 24px 0; padding: 18px; background: var(--bg-subtle); border-radius: var(--radius-md); text-align: left; font-size: 0.9rem; line-height: 1.6;">
+              <div style="margin-bottom: 10px;">
+                <strong>Pengembang Resmi:</strong> <span style="color: var(--primary-800); font-weight: 700;">Firmansyah,S.H Gr</span>
+              </div>
+              <div style="margin-bottom: 10px;">
+                <strong>Sasaran Pengguna:</strong> Guru dan Siswa Kelas IV, V, dan VI SDN 32 Rantau Bayur
+              </div>
+              <div style="margin-bottom: 10px;">
+                <strong>Tujuan Aplikasi:</strong> Membantu guru Pendidikan Agama Islam menciptakan proses belajar mengajar yang interaktif melalui permainan edukasi, kuis berkelompok, penilaian otomatis, serta pengelolaan bank soal tanpa ketergantungan koneksi internet konstan.
+              </div>
+              <div>
+                <strong>Pernyataan Pedagogis:</strong> PAI Quest dirancang sebagai alat bantu guru di kelas dan <em>bukan pengganti peran guru</em>, pembinaan akhlak nyata di lingkungan sekolah, maupun telaah keabsahan dalil keagamaan oleh guru dan instansi terkait.
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 14px; margin-top: 20px;">
+              <button class="btn btn-primary" id="btnAboutGoDashboard">Kembali ke Dashboard</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- Modal: Tambah/Edit Siswa -->
+<div class="modal-overlay" id="modalStudent">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalStudentTitle">Tambah Siswa Baru</h3>
+      <button class="modal-close" onclick="window.PAIApp.closeModal('modalStudent')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="studentEditId" />
+      <div class="form-group">
+        <label class="form-label">Kelas</label>
+        <select class="form-select" id="inputStudentClass">
+          <option value="Kelas IV">Kelas IV</option>
+          <option value="Kelas V">Kelas V</option>
+          <option value="Kelas VI">Kelas VI</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">NIS / Kode Siswa</label>
+        <input type="text" class="form-input" id="inputStudentNis" placeholder="Contoh: 20240401" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap Siswa</label>
+        <input type="text" class="form-input" id="inputStudentName" placeholder="Contoh: Ahmad Fauzan" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.PAIApp.closeModal('modalStudent')">Batal</button>
+      <button class="btn btn-primary" id="btnSaveStudent">Simpan Siswa</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tambah Kelas -->
+<div class="modal-overlay" id="modalClass">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Tambah Kelas Baru</h3>
+      <button class="modal-close" onclick="window.PAIApp.closeModal('modalClass')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nama Kelas</label>
+        <input type="text" class="form-input" id="inputClassName" placeholder="Contoh: Kelas IV B" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.PAIApp.closeModal('modalClass')">Batal</button>
+      <button class="btn btn-primary" id="btnSaveClass">Simpan Kelas</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tambah/Edit Soal -->
+<div class="modal-overlay" id="modalQuestion">
+  <div class="modal-dialog" style="max-width: 680px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalQuestionTitle">Tambah Soal Baru</h3>
+      <button class="modal-close" onclick="window.PAIApp.closeModal('modalQuestion')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="questionEditId" />
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Kelas</label>
+          <select class="form-select" id="inputQClass">
+            <option value="Kelas IV">Kelas IV</option>
+            <option value="Kelas V">Kelas V</option>
+            <option value="Kelas VI">Kelas VI</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kategori / Topik</label>
+          <input type="text" class="form-input" id="inputQTopic" placeholder="Contoh: Asmaul Husna" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Tipe Soal</label>
+          <select class="form-select" id="inputQType" onchange="window.PAIApp.onQuestionTypeChange()">
+            <option value="pilihan_ganda">Pilihan Ganda (A, B, C, D)</option>
+            <option value="benar_salah">Benar atau Salah</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tingkat Kesulitan</label>
+          <select class="form-select" id="inputQDifficulty">
+            <option value="Mudah">Mudah</option>
+            <option value="Sedang">Sedang</option>
+            <option value="Sulit">Sulit</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Teks Pertanyaan</label>
+        <textarea class="form-textarea" id="inputQText" rows="3" placeholder="Tuliskan pertanyaan yang jelas dan mudah dipahami siswa..."></textarea>
+      </div>
+
+      <!-- Multiple Choice Options -->
+      <div id="qOptionsWrapper">
+        <label class="form-label">Pilihan Jawaban</label>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <input type="text" class="form-input" id="inputQOptA" placeholder="Pilihan A..." />
+          <input type="text" class="form-input" id="inputQOptB" placeholder="Pilihan B..." />
+          <input type="text" class="form-input" id="inputQOptC" placeholder="Pilihan C..." />
+          <input type="text" class="form-input" id="inputQOptD" placeholder="Pilihan D..." />
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 14px;">
+        <label class="form-label">Kunci Jawaban Benar</label>
+        <select class="form-select" id="inputQKey">
+          <option value="A">Pilihan A</option>
+          <option value="B">Pilihan B</option>
+          <option value="C">Pilihan C</option>
+          <option value="D">Pilihan D</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Penjelasan / Pembahasan Guru</label>
+        <textarea class="form-textarea" id="inputQExplanation" rows="2" placeholder="Jelaskan alasan kunci jawaban dan hikmah pembelajarannya..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.PAIApp.closeModal('modalQuestion')">Batal</button>
+      <button class="btn btn-primary" id="btnSaveQuestion">Simpan Soal</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tambah Materi -->
+<div class="modal-overlay" id="modalMaterial">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Tambah Materi PAI</h3>
+      <button class="modal-close" onclick="window.PAIApp.closeModal('modalMaterial')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Kelas</label>
+          <select class="form-select" id="inputMatClass">
+            <option value="Kelas IV">Kelas IV</option>
+            <option value="Kelas V">Kelas V</option>
+            <option value="Kelas VI">Kelas VI</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kategori</label>
+          <select class="form-select" id="inputMatCategory">
+            <option value="Al-Qur'an & Hadis">Al-Qur'an & Hadis</option>
+            <option value="Akidah">Akidah</option>
+            <option value="Akhlak">Akhlak</option>
+            <option value="Fikih & Ibadah">Fikih & Ibadah</option>
+            <option value="Sejarah Peradaban Islam">Sejarah Peradaban Islam</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Judul Materi</label>
+        <input type="text" class="form-input" id="inputMatTitle" placeholder="Contoh: Meneladani Kisah Nabi Ibrahim AS" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ringkasan Konsep Pembelajaran</label>
+        <textarea class="form-textarea" id="inputMatSummary" rows="3" placeholder="Tuliskan poin-poin inti konsep materi..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Catatan Strategi Guru</label>
+        <textarea class="form-textarea" id="inputMatNotes" rows="2" placeholder="Catatan apersepsi, media pembelajaran, atau penekanan nilai akhlak..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.PAIApp.closeModal('modalMaterial')">Batal</button>
+      <button class="btn btn-primary" id="btnSaveMaterial">Simpan Materi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Konfirmasi Hapus Umum -->
+<div class="modal-overlay" id="modalConfirmDelete">
+  <div class="modal-dialog" style="max-width: 440px;">
+    <div class="modal-header">
+      <h3 class="modal-title" style="color: var(--danger-dark);">Konfirmasi Hapus Data</h3>
+      <button class="modal-close" onclick="window.PAIApp.closeModal('modalConfirmDelete')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="confirmDeleteMessage" style="font-size: 0.9rem; color: var(--text-main); line-height: 1.5;">
+        Apakah Anda yakin ingin menghapus data ini secara permanen?
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="window.PAIApp.closeModal('modalConfirmDelete')">Batal</button>
+      <button class="btn btn-danger" id="btnExecuteDelete">Ya, Hapus Data</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ================= JAVASCRIPT APLIKASI UTAMA (VANILLA JS MURNI) ================= -->
+<script>
+/**
+ * PAI QUEST — PETUALANGAN ILMU DAN AKHLAK
+ * Pengembang Resmi: Firmansyah,S.H Gr
+ * Institusi: SDN 32 Rantau Bayur
+ * Target Pengguna: Guru dan Siswa Kelas IV, V, VI
+ * Arsitektur: Vanilla JavaScript SPA + LocalStorage + Web Audio Synthesizer + Gemini API (Optional)
+ */
+
+(function () {
+  'use strict';
+
+  // 1. DATA DEMO RESMI & INISIALISASI
+  const STORAGE_KEY = 'paiQuestDataV1';
+
+  const INITIAL_DEMO_DATA = {
+    settings: {
+      teacherName: 'Firmansyah,S.H Gr',
+      schoolName: 'SDN 32 Rantau Bayur',
+      defaultClass: 'Kelas IV',
+      audioEnabled: true,
+      animationEnabled: true,
+      geminiApiKey: ''
+    },
+    classes: [
+      { id: 'c-4', name: 'Kelas IV', desc: 'Fase B - Jenjang 4' },
+      { id: 'c-5', name: 'Kelas V', desc: 'Fase C - Jenjang 5' },
+      { id: 'c-6', name: 'Kelas VI', desc: 'Fase C - Jenjang 6' }
+    ],
+    students: [
+      { id: 's-401', classId: 'Kelas IV', nis: '401', name: 'Ahmad Raihan', xp: 140, badges: ['Tekun Belajar', 'Bintang Kelas'] },
+      { id: 's-402', classId: 'Kelas IV', nis: '402', name: 'Fatimah Az-Zahra', xp: 160, badges: ['Sahabat Baik', 'Tekun Belajar'] },
+      { id: 's-403', classId: 'Kelas IV', nis: '403', name: 'Muhammad Bilal', xp: 120, badges: ['Pembelajar Gigih'] },
+      { id: 's-404', classId: 'Kelas IV', nis: '404', name: 'Aisyah Humaira', xp: 150, badges: ['Bintang Kelas'] },
+      { id: 's-501', classId: 'Kelas V', nis: '501', name: 'Ibrahim Al-Fatih', xp: 210, badges: ['Penjawab Tangkas', 'Bintang Kelas'] },
+      { id: 's-502', classId: 'Kelas V', nis: '502', name: 'Khadijah Putri', xp: 190, badges: ['Sahabat Baik'] },
+      { id: 's-503', classId: 'Kelas V', nis: '503', name: 'Zaid bin Tsabit', xp: 180, badges: ['Tekun Belajar'] },
+      { id: 's-601', classId: 'Kelas VI', nis: '601', name: 'Umar Abdullah', xp: 250, badges: ['Bintang Kelas', 'Penjelajah Hikmah'] },
+      { id: 's-602', classId: 'Kelas VI', nis: '602', name: 'Maryam Shalihah', xp: 230, badges: ['Tekun Belajar'] },
+      { id: 's-603', classId: 'Kelas VI', nis: '603', name: 'Yusuf Habibi', xp: 200, badges: ['Pembelajar Gigih'] }
+    ],
+    materials: [
+      {
+        id: 'm-1',
+        classId: 'Kelas IV',
+        category: 'Al-Qur\'an & Hadis',
+        title: 'Kandungan Surah Al-Hujurat Ayat 13: Saling Mengenal',
+        summary: 'Manusia diciptakan berbangsa-bangsa dan bersuku-suku agar saling mengenal dan menghargai keberagaman. Manusia paling mulia di sisi Allah adalah yang paling bertakwa.',
+        notes: 'Ajak siswa menyanyikan lagu keberagaman nusantara dan mendiskusikan indahnya berteman tanpa membeda-bedakan suku.'
+      },
+      {
+        id: 'm-2',
+        classId: 'Kelas IV',
+        category: 'Akidah',
+        title: 'Mengenal Asmaul Husna: Al-Malik, Al-Quddus, As-Salam',
+        summary: 'Al-Malik artinya Maha Merajai, Al-Quddus Maha Suci dari segala kekurangan, dan As-Salam Maha Pemberi Keselamatan dan Kesejahteraan.',
+        notes: 'Gunakan kartu tebak nama asmaul husna dan kaitkan dengan sikap menjaga kebersihan diri dan ruang kelas.'
+      },
+      {
+        id: 'm-3',
+        classId: 'Kelas IV',
+        category: 'Akhlak',
+        title: 'Adab Bergaul dan Menghormati Teman Sebaya',
+        summary: 'Menunjukkan kasih sayang kepada yang lebih muda, menghormati yang lebih tua, berbicara sopan, dan tidak memanggil dengan gelar ejekan.',
+        notes: 'Simulasi bermain peran tentang menyelesaikan perselisihan secara damai di lapangan sekolah.'
+      },
+      {
+        id: 'm-4',
+        classId: 'Kelas V',
+        category: 'Al-Qur\'an & Hadis',
+        title: 'Surah Al-Ma\'un: Peduli Terhadap Anak Yatim dan Fakir Miskin',
+        summary: 'Peringatan keras bagi orang yang mendustakan agama, yaitu orang yang menghardik anak yatim, enggan menolong fakir miskin, dan lalai dalam salat.',
+        notes: 'Kaitkan dengan program sedekah jumat berkah di SDN 32 Rantau Bayur.'
+      },
+      {
+        id: 'm-5',
+        classId: 'Kelas V',
+        category: 'Fikih & Ibadah',
+        title: 'Ketentuan dan Keutamaan Zakat Fitrah',
+        summary: 'Zakat fitrah merupakan kewajiban setiap muslim yang dikeluarkan pada bulan Ramadhan sebelum salat Idul Fitri untuk mensucikan diri dan membahagiakan kaum mustahik.',
+        notes: 'Praktik menimbang beras 2,5 kg atau 3,5 liter di kelas bersama siswa.'
+      },
+      {
+        id: 'm-6',
+        classId: 'Kelas VI',
+        category: 'Akidah',
+        title: 'Meyakini Hari Akhir (Kiamat) dan Hikmahnya',
+        summary: 'Hari kiamat adalah hari kehancuran alam semesta serta dimulainya alam akhirat. Hikmah beriman kepada hari akhir mendorong manusia beramal saleh.',
+        notes: 'Tegaskan bahwa waktu kiamat adalah rahasia Allah dan fokus kita adalah mempersiapkan bekal kebaikan.'
+      },
+      {
+        id: 'm-7',
+        classId: 'Kelas VI',
+        category: 'Akhlak',
+        title: 'Menjaga Kelestarian Alam dan Lingkungan Hidup',
+        summary: 'Manusia diangkat sebagai khalifah di bumi untuk merawat alam, menanam pohon, tidak membuang sampah sembarangan, serta tidak merusak sumber air.',
+        notes: 'Aktivitas aksi bersih lingkungan sekolah dan memilah sampah organik serta anorganik.'
+      }
+    ],
+    questions: [
+      {
+        id: 'q-101',
+        classId: 'Kelas IV',
+        topic: 'Surah Al-Hujurat Ayat 13',
+        type: 'pilihan_ganda',
+        difficulty: 'Mudah',
+        question: 'Menurut Surah Al-Hujurat ayat 13, manusia diciptakan bersuku-suku dan berbangsa-bangsa dengan tujuan utama agar...',
+        options: ['Saling bersaing dan mengunggulkan sukunya', 'Saling mengenal, menghormati, dan bersilaturahmi', 'Memisahkan diri dari kelompok lain', 'Menentukan suku yang paling berkuasa'],
+        key: 'B',
+        explanation: 'Potongan ayat "li-ta\'arafu" artinya agar kamu saling mengenal dan hidup rukun bersama.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-102',
+        classId: 'Kelas IV',
+        topic: 'Asmaul Husna',
+        type: 'pilihan_ganda',
+        difficulty: 'Mudah',
+        question: 'Asmaul Husna "Al-Quddus" memiliki makna bahwa Allah SWT Maha...',
+        options: ['Pengampun', 'Penyayang', 'Suci dari segala kekurangan dan cela', 'Pencipta alam semesta'],
+        key: 'C',
+        explanation: 'Al-Quddus artinya Maha Suci. Sifat ini mendorong kita untuk selalu menjaga kebersihan hati dan badan.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-103',
+        classId: 'Kelas IV',
+        topic: 'Asmaul Husna',
+        type: 'benar_salah',
+        difficulty: 'Sedang',
+        question: 'Menjaga lisan dari kata-kata kotor dan mencela teman merupakan salah satu bentuk meneladani Asmaul Husna As-Salam.',
+        options: ['Benar', 'Salah'],
+        key: 'A',
+        explanation: 'Benar. As-Salam artinya Maha Pemberi Keselamatan dan Kesejahteraan. Menjaga lisan mendatangkan kedamaian bagi orang sekitar.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-104',
+        classId: 'Kelas IV',
+        topic: 'Akhlak Terpuji',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Ketika temanmu terjatuh saat bermain di halaman sekolah, tindakan akhlak mulia yang paling tepat adalah...',
+        options: ['Menertawakannya bersama teman-teman', 'Membiarkannya berdiri sendiri tanpa mempedulikan', 'Segera menolongnya berdiri dan membawanya ke UKS bila terluka', 'Melaporkan kepada guru bahwa dia bermain tidak hati-hati'],
+        key: 'C',
+        explanation: 'Membantu teman yang kesusahan adalah bukti nyata empati dan ukhuwah Islamiyah.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-105',
+        classId: 'Kelas IV',
+        topic: 'Fikih Bersuci',
+        type: 'pilihan_ganda',
+        difficulty: 'Mudah',
+        question: 'Rukun wudu yang pertama kali wajib dilakukan setelah berniat adalah...',
+        options: ['Membasuh muka', 'Membasuh kedua tangan sampai siku', 'Mengusap sebagian kepala', 'Membasuh kedua kaki'],
+        key: 'A',
+        explanation: 'Sesuai Surah Al-Maidah ayat 6, rukun pertama wudu adalah membasuh wajah/muka.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-201',
+        classId: 'Kelas V',
+        topic: 'Surah Al-Ma\'un',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Dalam Surah Al-Ma\'un, orang yang mendustakan agama dicirikan sebagai orang yang...',
+        options: ['Bekerja keras mencari nafkah', 'Menghardik anak yatim dan tidak menganjurkan memberi makan orang miskin', 'Suka bersedekah secara sembunyi-sembunyi', 'Belajar Al-Qur\'an di masjid'],
+        key: 'B',
+        explanation: 'Surah Al-Ma\'un ayat 1-3 menegaskan bahaya menghardik anak yatim dan enggan menolong fakir miskin.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-202',
+        classId: 'Kelas V',
+        topic: 'Zakat Fitrah',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Berapakah takaran makanan pokok (beras) yang wajib dikeluarkan untuk zakat fitrah bagi setiap jiwa menurut ketetapan umum di Indonesia?',
+        options: ['1 kilogram atau 1,5 liter', '2,5 kilogram atau 3,5 liter', '5 kilogram atau 7 liter', '10 kilogram'],
+        key: 'B',
+        explanation: 'Ketetapan umum zakat fitrah adalah 1 sha\' yang setara dengan sekitar 2,5 kg atau 3,5 liter beras.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-203',
+        classId: 'Kelas V',
+        topic: 'Zakat Fitrah',
+        type: 'benar_salah',
+        difficulty: 'Mudah',
+        question: 'Zakat fitrah boleh diserahkan setelah pelaksanaan salat Idul Fitri dan tetap bernilai sebagai zakat fitrah sah.',
+        options: ['Benar', 'Salah'],
+        key: 'B',
+        explanation: 'Salah. Jika dibayarkan setelah salat Idul Fitri, maka statusnya terhitung sebagai sedekah biasa, bukan zakat fitrah.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-204',
+        classId: 'Kelas V',
+        topic: 'Kisah Nabi',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Nabi yang diberi gelar Khalilullah (Kekasih Allah) dan membangun kembali Ka\'bah bersama putranya adalah...',
+        options: ['Nabi Musa AS', 'Nabi Ibrahim AS', 'Nabi Isa AS', 'Nabi Nuh AS'],
+        key: 'B',
+        explanation: 'Nabi Ibrahim AS bergelar Khalilullah dan membangun Ka\'bah bersama putranya Nabi Ismail AS.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-301',
+        classId: 'Kelas VI',
+        topic: 'Hari Akhir',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Meyakini adanya Hari Kiamat termasuk ke dalam Rukun Iman yang ke-...',
+        options: ['Tiga', 'Empat', 'Lima', 'Enam'],
+        key: 'C',
+        explanation: 'Rukun Iman ke-5 adalah Beriman kepada Hari Akhir (Kiamat).',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-302',
+        classId: 'Kelas VI',
+        topic: 'Hari Akhir',
+        type: 'pilihan_ganda',
+        difficulty: 'Sedang',
+        question: 'Peristiwa ditiupnya sangkakala pertama oleh Malaikat Israfil menandai terjadinya...',
+        options: ['Kebangkitan manusia dari kubur', 'Kehancuran seluruh alam semesta (kiamat sugra)', 'Kematian dan kehancuran seluruh alam semesta (kiamat kubra)', 'Pengumpulan manusia di Padang Mahsyar'],
+        key: 'C',
+        explanation: 'Tiupan pertama membinasakan makhluk hidup di langit dan di bumi atas kehendak Allah SWT.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-303',
+        classId: 'Kelas VI',
+        topic: 'Lingkungan Hidup',
+        type: 'benar_salah',
+        difficulty: 'Mudah',
+        question: 'Islam melarang merusak pepohonan dan mengotori sumber air karena manusia mengemban amanah sebagai khalifah di muka bumi.',
+        options: ['Benar', 'Salah'],
+        key: 'A',
+        explanation: 'Benar. Menjaga kelestarian lingkungan merupakan wujud syukur dan tanggung jawab kekhalifahan manusia.',
+        points: 10,
+        verified: true
+      },
+      {
+        id: 'q-304',
+        classId: 'Kelas VI',
+        topic: 'Qada dan Qadar',
+        type: 'pilihan_ganda',
+        difficulty: 'Sulit',
+        question: 'Takdir Allah yang dapat diikhtiarkan dan diubah oleh manusia melalui usaha sungguh-sungguh dan doa disebut takdir...',
+        options: ['Mubram', 'Mu\'allaq', 'Mutlak', 'Batal'],
+        key: 'B',
+        explanation: 'Takdir Mu\'allaq adalah takdir yang terkait erat dengan ikhtiar manusia, seperti kepandaian dan kesehatan.',
+        points: 10,
+        verified: true
+      }
+    ],
+    sessions: [
+      {
+        id: 'ses-1',
+        date: '2026-10-15 09:30',
+        title: 'Kuis Pembuka Asmaul Husna',
+        classId: 'Kelas IV',
+        mode: 'Quiz Challenge',
+        totalQuestions: 5,
+        avgScore: 92,
+        xpAwarded: 70,
+        status: 'Selesai'
+      },
+      {
+        id: 'ses-2',
+        date: '2026-10-16 10:15',
+        title: 'Cerdas Cermat Zakat Fitrah',
+        classId: 'Kelas V',
+        mode: 'Battle Quiz',
+        totalQuestions: 4,
+        avgScore: 88,
+        xpAwarded: 60,
+        status: 'Selesai'
+      }
+    ]
+  };
+
+  // 2. STATE MANAGER
+  let appState = null;
+  let activeView = 'dashboard';
+  let activeLiveSession = null;
+  let liveTimerInterval = null;
+  let deletePendingCallback = null;
+  let audioCtx = null;
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.classes && parsed.questions) {
+          appState = parsed;
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Gagal memuat state dari LocalStorage, menggunakan fallback demo:', e);
+    }
+    appState = JSON.parse(JSON.stringify(INITIAL_DEMO_DATA));
+    saveState();
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    } catch (e) {
+      showToast('Peringatan: Gagal menyimpan data lokal (kuota penuh).', true);
+    }
+  }
+
+  // 3. SOUND SYNTHESIZER (WEB AUDIO API - ZERO EXTERNAL ASSETS)
+  function initAudio() {
+    if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playSound(type) {
+    if (!appState || !appState.settings.audioEnabled) return;
+    try {
+      initAudio();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'correct') {
+        // Cheerful ascending chime (C5 -> E5 -> G5)
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.1);
+        osc.frequency.setValueAtTime(783.99, now + 0.2);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      } else if (type === 'wrong') {
+        // Gentle soft buzz
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(160, now + 0.25);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } else if (type === 'fanfare') {
+        // Victory fanfare
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(554.37, now + 0.12);
+        osc.frequency.setValueAtTime(659.25, now + 0.24);
+        osc.frequency.setValueAtTime(880, now + 0.36);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+        osc.start(now);
+        osc.stop(now + 0.7);
+      } else if (type === 'tick') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      }
+    } catch (e) {
+      // Audio fallback fail safe
+    }
+  }
+
+  // 4. TOAST NOTIFICATIONS
+  function showToast(text, isError = false) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const msg = document.createElement('div');
+    msg.className = `toast-message ${isError ? 'error' : ''}`;
+    msg.textContent = text;
+    container.appendChild(msg);
+    setTimeout(() => {
+      msg.style.opacity = '0';
+      setTimeout(() => msg.remove(), 250);
+    }, 3200);
+  }
+
+  // 5. MODAL SYSTEM
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.add('active');
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('active');
+  }
+
+  function confirmAction(message, onConfirm) {
+    const msgEl = document.getElementById('confirmDeleteMessage');
+    if (msgEl) msgEl.textContent = message;
+    deletePendingCallback = onConfirm;
+    openModal('modalConfirmDelete');
+  }
+
+  // 6. ROUTER & VIEW SWITCHER
+  function switchView(viewName) {
+    const views = document.querySelectorAll('.view-section');
+    views.forEach(v => v.classList.remove('active'));
+
+    const target = document.getElementById(`view-${viewName}`);
+    if (target) {
+      target.classList.add('active');
+      activeView = viewName;
+    }
+
+    // Update Sidebar button active state
+    const navBtns = document.querySelectorAll('#sidebarNav .nav-btn');
+    navBtns.forEach(btn => {
+      if (btn.getAttribute('data-view') === viewName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Close mobile drawer if opened
+    const sidebar = document.getElementById('appSidebar');
+    if (sidebar) sidebar.classList.remove('open');
+
+    // Update Header title
+    const titleMap = {
+      dashboard: 'Dashboard Guru',
+      classes: 'Kelas & Siswa',
+      materials: 'Materi PAI',
+      questions: 'Bank Soal',
+      gamestudio: 'Game Studio',
+      liveclassroom: 'Live Classroom',
+      reports: 'Hasil & Laporan',
+      aiassistant: 'AI Teaching Assistant',
+      settings: 'Pengaturan',
+      about: 'Tentang Aplikasi'
+    };
+    const titleEl = document.getElementById('pageTitleText');
+    if (titleEl) titleEl.textContent = titleMap[viewName] || 'PAI Quest';
+
+    // Refresh view specific contents
+    if (viewName === 'dashboard') renderDashboard();
+    if (viewName === 'classes') renderClassesView();
+    if (viewName === 'materials') renderMaterialsView();
+    if (viewName === 'questions') renderQuestionsView();
+    if (viewName === 'gamestudio') renderGameStudio();
+    if (viewName === 'reports') renderReportsView();
+    if (viewName === 'aiassistant') renderAiAssistant();
+    if (viewName === 'settings') renderSettings();
+  }
+
+  // 7. RENDER DASHBOARD
+  function renderDashboard() {
+    document.getElementById('statTotalClasses').textContent = appState.classes.length;
+    document.getElementById('statTotalStudents').textContent = appState.students.length;
+    document.getElementById('statTotalQuestions').textContent = appState.questions.length;
+    document.getElementById('statTotalSessions').textContent = appState.sessions.length;
+
+    // Populate recent activities
+    const listEl = document.getElementById('dashRecentActivityList');
+    if (appState.sessions.length === 0) {
+      listEl.innerHTML = `
+        <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.88rem;">
+          Belum ada sesi kuis yang tersimpan. Mulai kuis pertama Anda melalui Game Studio!
+        </div>
+      `;
+    } else {
+      let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
+      appState.sessions.slice(-3).reverse().forEach(s => {
+        html += `
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-600);">
+            <div>
+              <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-main);">${escapeHtml(s.title)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(s.classId)} • Mode: ${escapeHtml(s.mode)} • ${escapeHtml(s.date)}</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge badge-emerald">Nilai: ${s.avgScore}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      listEl.innerHTML = html;
+    }
+  }
+
+  // 8. RENDER KELAS & SISWA
+  let activeClassFilter = 'Kelas IV';
+
+  function syncAllClassDropdowns() {
+    if (!appState || !appState.classes) return;
+    const classNames = appState.classes.map(c => c.name);
+
+    const updateSelect = (id, includeAllOption = false) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const currentVal = el.value;
+      let html = '';
+      if (includeAllOption) {
+        html += '<option value="">Semua Kelas</option>';
+      }
+      classNames.forEach(cn => {
+        html += `<option value="${escapeHtml(cn)}">${escapeHtml(cn)}</option>`;
+      });
+      el.innerHTML = html;
+      if (classNames.includes(currentVal)) {
+        el.value = currentVal;
+      } else if (!includeAllOption && classNames.length > 0) {
+        el.value = classNames[0];
+      }
+    };
+
+    updateSelect('inputStudentClass', false);
+    updateSelect('filterMaterialClass', true);
+    updateSelect('inputMatClass', false);
+    updateSelect('filterQuestionClass', true);
+    updateSelect('inputQClass', false);
+    updateSelect('gameConfigClass', false);
+    updateSelect('aiQuizClass', false);
+    updateSelect('settingDefaultClass', false);
+  }
+
+  function renderClassesView() {
+    // Ensure activeClassFilter is valid
+    if (!appState.classes.some(c => c.name === activeClassFilter) && appState.classes.length > 0) {
+      activeClassFilter = appState.classes[0].name;
+    }
+
+    const labelBtn = document.getElementById('labelCurrentActiveClass');
+    if (labelBtn) {
+      labelBtn.textContent = activeClassFilter ? `(${activeClassFilter})` : '';
+    }
+
+    // Render Class Tabs with individual delete action
+    const tabsCont = document.getElementById('classTabsContainer');
+    tabsCont.innerHTML = '';
+    appState.classes.forEach(c => {
+      const isActive = activeClassFilter === c.name;
+      const wrap = document.createElement('div');
+      wrap.style.cssText = `display: inline-flex; align-items: center; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid ${isActive ? 'var(--primary-600)' : 'var(--border-color)'}; box-shadow: var(--shadow-sm); margin-right: 8px; margin-bottom: 6px;`;
+
+      const btn = document.createElement('button');
+      btn.className = `btn btn-sm ${isActive ? 'btn-primary' : 'btn-secondary'}`;
+      btn.style.cssText = 'border: none; border-radius: 0; padding: 6px 12px; font-weight: 700;';
+      btn.textContent = c.name;
+      btn.onclick = () => {
+        activeClassFilter = c.name;
+        renderClassesView();
+      };
+      wrap.appendChild(btn);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'btn btn-sm';
+      delBtn.style.cssText = `border: none; border-radius: 0; padding: 6px 8px; background: ${isActive ? 'var(--primary-700)' : '#fee2e2'}; color: ${isActive ? '#ffffff' : 'var(--danger-dark)'}; cursor: pointer;`;
+      delBtn.title = `Hapus ${c.name}`;
+      delBtn.setAttribute('aria-label', `Hapus ${c.name}`);
+      delBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        window.PAIApp.deleteClass(c.id);
+      };
+      wrap.appendChild(delBtn);
+
+      tabsCont.appendChild(wrap);
+    });
+
+    // Populate Students Table
+    const query = (document.getElementById('searchStudentInput').value || '').toLowerCase().trim();
+    const tbody = document.getElementById('studentTableBody');
+    tbody.innerHTML = '';
+
+    const filtered = appState.students.filter(s => {
+      const matchClass = s.classId === activeClassFilter;
+      const matchQuery = !query || s.name.toLowerCase().includes(query) || s.nis.toLowerCase().includes(query);
+      return matchClass && matchQuery;
+    });
+
+    document.getElementById('studentCountBadge').textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">
+            Tidak ada siswa yang ditemukan di ${activeClassFilter}. Klik "Tambah Siswa" untuk menambahkan data.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    filtered.forEach((st, idx) => {
+      const tr = document.createElement('tr');
+      const badgesHtml = (st.badges || []).map(b => `<span class="badge badge-gold">${escapeHtml(b)}</span>`).join(' ') || '<span style="color:#94a3b8; font-size:0.75rem;">-</span>';
+      
+      tr.innerHTML = `
+        <td>${idx + 1}</td>
+        <td><strong>${escapeHtml(st.nis)}</strong></td>
+        <td>${escapeHtml(st.name)}</td>
+        <td><span class="badge badge-emerald">${escapeHtml(st.classId)}</span></td>
+        <td><strong>${st.xp || 0} XP</strong></td>
+        <td>${badgesHtml}</td>
+        <td style="text-align: right;">
+          <button class="btn btn-secondary btn-sm" onclick="window.PAIApp.editStudent('${st.id}')">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="window.PAIApp.deleteStudent('${st.id}')">Hapus</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // 9. RENDER MATERI PAI
+  function renderMaterialsView() {
+    const query = (document.getElementById('searchMaterialInput').value || '').toLowerCase().trim();
+    const classFilter = document.getElementById('filterMaterialClass').value;
+    const catFilter = document.getElementById('filterMaterialCategory').value;
+    const grid = document.getElementById('materialsGridContainer');
+    grid.innerHTML = '';
+
+    const filtered = appState.materials.filter(m => {
+      const matchClass = !classFilter || m.classId === classFilter;
+      const matchCat = !catFilter || m.category === catFilter;
+      const matchQuery = !query || m.title.toLowerCase().includes(query) || m.summary.toLowerCase().includes(query);
+      return matchClass && matchCat && matchQuery;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 36px; color: var(--text-muted);">
+          Tidak ada materi yang sesuai kriteria pencarian.
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach(mat => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.marginBottom = '0';
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <span class="badge badge-emerald">${escapeHtml(mat.classId)}</span>
+          <span class="badge badge-purple">${escapeHtml(mat.category)}</span>
+        </div>
+        <h3 style="font-size: 1rem; font-weight: 700; color: var(--primary-900); margin-bottom: 8px; line-height: 1.35;">
+          ${escapeHtml(mat.title)}
+        </h3>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+          ${escapeHtml(mat.summary)}
+        </p>
+        <div style="background: var(--bg-subtle); padding: 10px; border-radius: var(--radius-sm); font-size: 0.78rem; color: var(--text-main); margin-bottom: 14px; border-left: 2px solid var(--gold-500);">
+          <strong>Catatan Guru:</strong> ${escapeHtml(mat.notes || 'Fokuskan pada keteladanan akhlak praktis.')}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+          <button class="btn btn-gold btn-sm" onclick="window.PAIApp.launchQuizFromMaterial('${escapeHtml(mat.classId)}', '${escapeHtml(mat.title)}')">
+            Buat Kuis Topik Ini
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="window.PAIApp.deleteMaterial('${mat.id}')">Hapus</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // 10. RENDER BANK SOAL
+  const selectedQuestionIds = new Set();
+
+  function renderQuestionsView() {
+    const query = (document.getElementById('searchQuestionInput').value || '').toLowerCase().trim();
+    const classFilter = document.getElementById('filterQuestionClass').value;
+    const diffFilter = document.getElementById('filterQuestionDifficulty').value;
+    const container = document.getElementById('questionsListContainer');
+    container.innerHTML = '';
+
+    const filtered = appState.questions.filter(q => {
+      const matchClass = !classFilter || q.classId === classFilter;
+      const matchDiff = !diffFilter || q.difficulty === diffFilter;
+      const matchQuery = !query || q.question.toLowerCase().includes(query) || (q.topic && q.topic.toLowerCase().includes(query));
+      return matchClass && matchDiff && matchQuery;
+    });
+
+    document.getElementById('selectedQuestionsCount').textContent = selectedQuestionIds.size;
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 36px; background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--border-color); color: var(--text-muted);">
+          Belum ada soal yang cocok dengan filter. Klik "Tambah Soal Baru" untuk mulai membuat soal.
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach((q, idx) => {
+      const isSelected = selectedQuestionIds.has(q.id);
+      const item = document.createElement('div');
+      item.className = 'card';
+      item.style.marginBottom = '0';
+      if (isSelected) item.style.borderColor = 'var(--primary-600)';
+
+      let choicesHtml = '';
+      if (q.type === 'pilihan_ganda' && q.options) {
+        choicesHtml = `
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;">
+            ${q.options.map((opt, i) => {
+              const letter = String.fromCharCode(65 + i);
+              const isCorrect = q.key === letter;
+              return `
+                <div style="padding: 7px 10px; border-radius: var(--radius-sm); font-size: 0.82rem; background: ${isCorrect ? 'var(--primary-50)' : 'var(--bg-subtle)'}; border: 1px solid ${isCorrect ? 'var(--primary-500)' : 'var(--border-subtle)'}; color: ${isCorrect ? 'var(--primary-900)' : 'var(--text-main)'};">
+                  <strong>${letter}.</strong> ${escapeHtml(opt)} ${isCorrect ? '✓ (Kunci)' : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else if (q.type === 'benar_salah') {
+        choicesHtml = `
+          <div style="display: flex; gap: 12px; margin: 12px 0;">
+            <span class="badge ${q.key === 'A' ? 'badge-emerald' : 'badge-gray'}">Pilihan A: Benar ${q.key === 'A' ? '✓' : ''}</span>
+            <span class="badge ${q.key === 'B' ? 'badge-emerald' : 'badge-gray'}">Pilihan B: Salah ${q.key === 'B' ? '✓' : ''}</span>
+          </div>
+        `;
+      }
+
+      item.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="window.PAIApp.toggleQuestionSelect('${q.id}')" style="width: 17px; height: 17px; accent-color: var(--primary-600);" />
+            <span class="badge badge-emerald">${escapeHtml(q.classId)}</span>
+            <span class="badge badge-gold">${escapeHtml(q.difficulty)}</span>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">Topik: ${escapeHtml(q.topic || 'Umum')}</span>
+          </div>
+          <div>
+            <span class="badge badge-blue">${q.points || 10} Poin</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+          ${idx + 1}. ${escapeHtml(q.question)}
+        </div>
+
+        ${choicesHtml}
+
+        <div style="background: var(--bg-subtle); padding: 8px 12px; border-radius: var(--radius-sm); font-size: 0.78rem; color: var(--text-muted); border-left: 2px solid var(--primary-600); margin-bottom: 10px;">
+          <strong>Pembahasan:</strong> ${escapeHtml(q.explanation || 'Jawaban telah diverifikasi oleh guru PAI.')}
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="window.PAIApp.editQuestion('${q.id}')">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="window.PAIApp.deleteQuestion('${q.id}')">Hapus</button>
+        </div>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  // 11. RENDER GAME STUDIO
+  function renderGameStudio() {
+    const selectedClass = document.getElementById('gameConfigClass').value;
+    const container = document.getElementById('gameStudioQuestionList');
+    container.innerHTML = '';
+
+    const classQuestions = appState.questions.filter(q => q.classId === selectedClass);
+    document.getElementById('gameStudioSelectedCount').textContent = selectedQuestionIds.size;
+
+    if (classQuestions.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Belum ada soal untuk ${selectedClass}. Buat soal terlebih dahulu di Bank Soal.</div>`;
+      return;
+    }
+
+    classQuestions.forEach(q => {
+      const isChecked = selectedQuestionIds.has(q.id);
+      const div = document.createElement('div');
+      div.style.cssText = 'background: #ffffff; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px;';
+      div.innerHTML = `
+        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="window.PAIApp.toggleStudioQuestionSelect('${q.id}')" style="width: 16px; height: 16px; accent-color: var(--primary-600);" />
+        <div style="flex: 1; font-size: 0.84rem; color: var(--text-main);">
+          <strong>[${escapeHtml(q.difficulty)}]</strong> ${escapeHtml(q.question)}
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // 12. LIVE CLASSROOM ENGINE
+  function startLiveGameSession(sessionConfig) {
+    if (!sessionConfig.questions || sessionConfig.questions.length === 0) {
+      showToast('Pilih setidaknya 1 soal untuk memulai permainan!', true);
+      return;
+    }
+
+    activeLiveSession = {
+      title: sessionConfig.title,
+      classId: sessionConfig.classId,
+      mode: sessionConfig.mode, // quiz_challenge | battle_quiz | islamic_adventure | akhlak_scenario
+      duration: parseInt(sessionConfig.duration, 10) || 0,
+      feedbackMode: sessionConfig.feedbackMode,
+      questions: JSON.parse(JSON.stringify(sessionConfig.questions)),
+      currentIndex: 0,
+      scores: 0,
+      correctCount: 0,
+      totalEarnedXp: 0,
+      battleTeams: [
+        { name: 'Regu Abu Bakar', score: 0 },
+        { name: 'Regu Umar', score: 0 },
+        { name: 'Regu Utsman', score: 0 },
+        { name: 'Regu Ali', score: 0 }
+      ],
+      userAnswers: {},
+      isPaused: false,
+      timeLeft: parseInt(sessionConfig.duration, 10) || 0
+    };
+
+    switchView('liveclassroom');
+    setupLiveClassroomUI();
+    renderLiveCurrentQuestion();
+  }
+
+  function setupLiveClassroomUI() {
+    document.getElementById('liveSessionTitleDisplay').textContent = activeLiveSession.title;
+    
+    // Mode Badge
+    const modeBadge = document.getElementById('liveModeBadge');
+    const modeTitles = {
+      quiz_challenge: 'Quiz Challenge (Klasik & Proyektor)',
+      battle_quiz: 'Battle Quiz (Cerdas Cermat Regu)',
+      islamic_adventure: 'Islamic Adventure (Petualangan Hikmah)',
+      akhlak_scenario: 'Skenario Akhlak Sehari-hari'
+    };
+    modeBadge.textContent = modeTitles[activeLiveSession.mode] || 'Quiz Challenge';
+
+    // Show/hide Battle Quiz Teams panel
+    const battlePanel = document.getElementById('liveBattleTeamsPanel');
+    battlePanel.style.display = activeLiveSession.mode === 'battle_quiz' ? 'grid' : 'none';
+
+    // Show/hide Adventure Tracker
+    const advTracker = document.getElementById('liveAdventureTracker');
+    advTracker.style.display = activeLiveSession.mode === 'islamic_adventure' ? 'flex' : 'none';
+
+    // Reset screens
+    document.getElementById('liveActiveQuestionArea').style.display = 'block';
+    document.getElementById('liveControlsFooter').style.display = 'flex';
+    document.getElementById('liveSessionFinishScreen').style.display = 'none';
+
+    // Timer display
+    const timerBox = document.getElementById('liveTimerBox');
+    if (activeLiveSession.duration === 0) {
+      timerBox.style.display = 'none';
+    } else {
+      timerBox.style.display = 'flex';
+      timerBox.classList.remove('urgent');
+    }
+  }
+
+  function renderLiveCurrentQuestion() {
+    clearInterval(liveTimerInterval);
+    const q = activeLiveSession.questions[activeLiveSession.currentIndex];
+    const totalQ = activeLiveSession.questions.length;
+    const currentNum = activeLiveSession.currentIndex + 1;
+
+    // Indicators
+    document.getElementById('liveQuestionMeta').textContent = `Soal ${currentNum} dari ${totalQ} • ${q.difficulty} • Bobot: ${q.points || 10} Poin`;
+    document.getElementById('liveQuestionText').textContent = q.question;
+    document.getElementById('liveProgressIndicator').textContent = `Soal ${currentNum} dari ${totalQ}`;
+
+    // Adventure Tracker Update
+    if (activeLiveSession.mode === 'islamic_adventure') {
+      for (let i = 1; i <= 5; i++) {
+        const stageEl = document.getElementById(`advStage${i}`);
+        if (stageEl) {
+          stageEl.classList.remove('active', 'completed');
+          if (i < currentNum) stageEl.classList.add('completed');
+          else if (i === currentNum) stageEl.classList.add('active');
+        }
+      }
+    }
+
+    // Explanation Box reset
+    const expBox = document.getElementById('liveExplanationBox');
+    expBox.style.display = 'none';
+    document.getElementById('liveExplanationText').textContent = q.explanation || 'Jawaban telah diverifikasi oleh guru PAI.';
+
+    // Options Container
+    const optsCont = document.getElementById('liveOptionsContainer');
+    optsCont.innerHTML = '';
+
+    const letters = ['A', 'B', 'C', 'D'];
+    const optionsToRender = q.type === 'benar_salah' ? ['Benar', 'Salah'] : (q.options || []);
+
+    optionsToRender.forEach((optText, idx) => {
+      const letter = letters[idx];
+      const btn = document.createElement('button');
+      btn.className = 'live-option-btn';
+      btn.id = `liveOptBtn_${letter}`;
+      btn.innerHTML = `
+        <span class="option-key-label">${letter}</span>
+        <span>${escapeHtml(optText)}</span>
+      `;
+      btn.onclick = () => selectLiveAnswer(letter, q.key, q.points || 10);
+      optsCont.appendChild(btn);
+    });
+
+    // Start Question Timer if enabled
+    if (activeLiveSession.duration > 0) {
+      activeLiveSession.timeLeft = activeLiveSession.duration;
+      updateTimerDisplay();
+      liveTimerInterval = setInterval(() => {
+        if (!activeLiveSession.isPaused) {
+          activeLiveSession.timeLeft--;
+          updateTimerDisplay();
+          if (activeLiveSession.timeLeft <= 5) {
+            playSound('tick');
+          }
+          if (activeLiveSession.timeLeft <= 0) {
+            clearInterval(liveTimerInterval);
+            revealLiveAnswer();
+          }
+        }
+      }, 1000);
+    }
+  }
+
+  function updateTimerDisplay() {
+    const el = document.getElementById('liveTimerSeconds');
+    if (el) el.textContent = activeLiveSession.timeLeft;
+    const box = document.getElementById('liveTimerBox');
+    if (box) {
+      if (activeLiveSession.timeLeft <= 5 && activeLiveSession.timeLeft > 0) {
+        box.classList.add('urgent');
+      } else {
+        box.classList.remove('urgent');
+      }
+    }
+  }
+
+  function selectLiveAnswer(chosenLetter, correctLetter, points) {
+    clearInterval(liveTimerInterval);
+    const qIndex = activeLiveSession.currentIndex;
+    const isCorrect = chosenLetter === correctLetter;
+
+    activeLiveSession.userAnswers[qIndex] = {
+      chosen: chosenLetter,
+      correct: correctLetter,
+      isCorrect: isCorrect
+    };
+
+    if (isCorrect) {
+      activeLiveSession.scores += points;
+      activeLiveSession.correctCount++;
+      activeLiveSession.totalEarnedXp += points + 5; // 5 XP streak bonus
+      playSound('correct');
+    } else {
+      activeLiveSession.totalEarnedXp += 2; // Encouragement XP for participation
+      playSound('wrong');
+    }
+
+    revealLiveAnswer();
+  }
+
+  function revealLiveAnswer() {
+    const q = activeLiveSession.questions[activeLiveSession.currentIndex];
+    const correctLetter = q.key;
+    const currentAnswer = activeLiveSession.userAnswers[activeLiveSession.currentIndex];
+
+    const letters = ['A', 'B', 'C', 'D'];
+    letters.forEach(lettr => {
+      const btn = document.getElementById(`liveOptBtn_${lettr}`);
+      if (btn) {
+        btn.disabled = true;
+        if (lettr === correctLetter) {
+          btn.classList.add('correct');
+        } else if (currentAnswer && currentAnswer.chosen === lettr) {
+          btn.classList.add('wrong');
+        }
+      }
+    });
+
+    const expBox = document.getElementById('liveExplanationBox');
+    if (expBox) expBox.style.display = 'block';
+  }
+
+  function nextLiveQuestion() {
+    if (activeLiveSession.currentIndex < activeLiveSession.questions.length - 1) {
+      activeLiveSession.currentIndex++;
+      renderLiveCurrentQuestion();
+    } else {
+      finishLiveSession();
+    }
+  }
+
+  function prevLiveQuestion() {
+    if (activeLiveSession.currentIndex > 0) {
+      activeLiveSession.currentIndex--;
+      renderLiveCurrentQuestion();
+    }
+  }
+
+  function finishLiveSession() {
+    clearInterval(liveTimerInterval);
+    playSound('fanfare');
+
+    // Calculate final scores
+    const totalQ = activeLiveSession.questions.length;
+    const maxPoints = activeLiveSession.questions.reduce((sum, q) => sum + (q.points || 10), 0);
+    const finalPercent = Math.round((activeLiveSession.scores / maxPoints) * 100);
+
+    // Record session into history
+    const sessionRecord = {
+      id: 'ses-' + Date.now(),
+      date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
+      title: activeLiveSession.title,
+      classId: activeLiveSession.classId,
+      mode: activeLiveSession.mode,
+      totalQuestions: totalQ,
+      avgScore: finalPercent,
+      xpAwarded: activeLiveSession.totalEarnedXp,
+      status: 'Selesai'
+    };
+    appState.sessions.push(sessionRecord);
+    saveState();
+
+    // Show Celebration Finish Screen
+    document.getElementById('liveActiveQuestionArea').style.display = 'none';
+    document.getElementById('liveControlsFooter').style.display = 'none';
+    document.getElementById('liveSessionFinishScreen').style.display = 'block';
+
+    document.getElementById('liveFinishFinalScore').textContent = `${finalPercent}`;
+    document.getElementById('liveFinishCorrectRatio').textContent = `${activeLiveSession.correctCount} / ${totalQ}`;
+    document.getElementById('liveFinishTotalXp').textContent = `+${activeLiveSession.totalEarnedXp} XP`;
+  }
+
+  // 13. RENDER HASIL & LAPORAN
+  function renderReportsView() {
+    const totalSessions = appState.sessions.length;
+    document.getElementById('reportTotalSesiSelesai').textContent = totalSessions;
+
+    if (totalSessions > 0) {
+      const avg = Math.round(appState.sessions.reduce((acc, s) => acc + s.avgScore, 0) / totalSessions);
+      document.getElementById('reportRataRataNilai').textContent = avg;
+      const tuntasCount = appState.sessions.filter(s => s.avgScore >= 75).length;
+      document.getElementById('reportKetuntasanPersen').textContent = `${Math.round((tuntasCount / totalSessions) * 100)}%`;
+    } else {
+      document.getElementById('reportRataRataNilai').textContent = '0';
+      document.getElementById('reportKetuntasanPersen').textContent = '0%';
+    }
+
+    const tbody = document.getElementById('reportSessionsTableBody');
+    tbody.innerHTML = '';
+
+    if (totalSessions === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">
+            Belum ada data riwayat sesi. Sesi yang telah diselesaikan di Live Classroom akan tercatat otomatis di sini.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    appState.sessions.slice().reverse().forEach((s, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${escapeHtml(s.date)}</td>
+        <td><strong>${escapeHtml(s.title)}</strong></td>
+        <td><span class="badge badge-emerald">${escapeHtml(s.classId)}</span></td>
+        <td>${escapeHtml(s.mode)}</td>
+        <td>${s.totalQuestions} Soal</td>
+        <td><strong style="color: var(--primary-800);">${s.avgScore}</strong></td>
+        <td><span class="badge badge-gold">${escapeHtml(s.status || 'Selesai')}</span></td>
+        <td style="text-align: right;">
+          <button class="btn btn-secondary btn-sm" onclick="window.PAIApp.deleteSessionRecord('${s.id}')">Hapus</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // 14. AI ASSISTANT VIEW & INTEGRATION
+  let currentAiDraftQuestions = [];
+
+  function renderAiAssistant() {
+    const key = appState.settings.geminiApiKey || '';
+    const badge = document.getElementById('aiStatusBadge');
+    const input = document.getElementById('inputGeminiApiKey');
+    if (input) input.value = key;
+
+    if (key.trim().length > 0) {
+      badge.className = 'badge badge-emerald';
+      badge.textContent = 'Gemini AI Aktif';
+    } else {
+      badge.className = 'badge badge-gray';
+      badge.textContent = 'AI Belum Dikonfigurasi';
+    }
+  }
+
+  async function callGeminiApi(promptText) {
+    const key = appState.settings.geminiApiKey;
+    if (!key || key.trim() === '') {
+      throw new Error('API Key belum diisi. Harap masukkan Gemini API Key di kotak konfigurasi atas terlebih dahulu.');
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`;
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: promptText }]
+          }
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error?.message || `Permintaan gagal dengan status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const candidate = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!candidate) throw new Error('Tidak ada respon teks yang diterima dari Gemini API.');
+    return candidate;
+  }
+
+  async function generateAiQuiz() {
+    const targetClass = document.getElementById('aiQuizClass').value;
+    const topic = document.getElementById('aiQuizTopic').value;
+    const count = parseInt(document.getElementById('aiQuizCount').value, 10) || 3;
+    const loadingEl = document.getElementById('aiLoadingIndicator');
+    const btn = document.getElementById('btnRunAiGenerateQuiz');
+
+    if (!topic.trim()) {
+      showToast('Masukkan topik materi terlebih dahulu!', true);
+      return;
+    }
+
+    try {
+      loadingEl.style.display = 'inline-block';
+      btn.disabled = true;
+
+      const prompt = `
+Anda adalah asisten kurikulum PAI SD. Buatkan ${count} draf soal pilihan ganda untuk ${targetClass} materi "${topic}".
+Format respon WAJIB berupa JSON array valid tanpa markdown atau teks pengantar lainnya, dengan struktur:
+[
+  {
+    "question": "pertanyaan",
+    "options": ["pilihan A", "pilihan B", "pilihan C", "pilihan D"],
+    "key": "A",
+    "explanation": "alasan kunci dan hikmahnya",
+    "difficulty": "Sedang",
+    "points": 10
+  }
+]
+`;
+
+      const raw = await callGeminiApi(prompt);
+      const cleanJson = raw.replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+
+      if (!Array.isArray(parsed)) throw new Error('Format respon JSON tidak sesuai daftar array.');
+
+      currentAiDraftQuestions = parsed.map((item, idx) => ({
+        id: `q-ai-${Date.now()}-${idx}`,
+        classId: targetClass,
+        topic: topic,
+        type: 'pilihan_ganda',
+        difficulty: item.difficulty || 'Sedang',
+        question: item.question,
+        options: item.options || [],
+        key: item.key || 'A',
+        explanation: item.explanation || '',
+        points: item.points || 10,
+        verified: false
+      }));
+
+      renderAiQuizDrafts();
+      showToast('Berhasil menghasilkan draf soal dari Gemini!');
+    } catch (err) {
+      showToast(err.message, true);
+    } finally {
+      loadingEl.style.display = 'none';
+      btn.disabled = false;
+    }
+  }
+
+  function renderAiQuizDrafts() {
+    const container = document.getElementById('aiQuizResultsContainer');
+    const listEl = document.getElementById('aiQuizListOutput');
+    listEl.innerHTML = '';
+    container.style.display = 'block';
+
+    currentAiDraftQuestions.forEach((q, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background: #ffffff; padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);';
+      card.innerHTML = `
+        <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 6px;">
+          ${i + 1}. ${escapeHtml(q.question)}
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;">
+          <strong>Pilihan:</strong> ${q.options.map((o, idx) => `(${String.fromCharCode(65 + idx)}) ${escapeHtml(o)}`).join('  •  ')}
+        </div>
+        <div style="font-size: 0.78rem; color: var(--primary-800); background: var(--primary-50); padding: 6px 10px; border-radius: 4px;">
+          <strong>Kunci:</strong> ${q.key} — ${escapeHtml(q.explanation)}
+        </div>
+      `;
+      listEl.appendChild(card);
+    });
+  }
+
+  // 15. SETTINGS & EXPORT/IMPORT
+  function renderSettings() {
+    document.getElementById('settingTeacherName').value = 'Firmansyah,S.H Gr';
+    document.getElementById('settingSchoolName').value = appState.settings.schoolName || 'SDN 32 Rantau Bayur';
+    document.getElementById('settingDefaultClass').value = appState.settings.defaultClass || 'Kelas IV';
+    document.getElementById('settingEnableAudio').checked = appState.settings.audioEnabled !== false;
+    document.getElementById('settingEnableAnimation').checked = appState.settings.animationEnabled !== false;
+  }
+
+  function exportDataAsJson(filename, dataObj) {
+    const str = JSON.stringify(dataObj, null, 2);
+    const blob = new Blob([str], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportStudentsCsv() {
+    let csv = 'No,NIS,Nama,Kelas,XP,Lencana\n';
+    appState.students.forEach((s, idx) => {
+      const badgesStr = (s.badges || []).join('; ');
+      csv += `"${idx + 1}","${s.nis}","${s.name}","${s.classId}","${s.xp}","${badgesStr}"\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `siswa_pai_sdn32_${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportReportsCsv() {
+    let csv = 'Tanggal,Judul Sesi,Kelas,Mode Game,Jumlah Soal,Nilai Rata-rata,Status\n';
+    appState.sessions.forEach(s => {
+      csv += `"${s.date}","${s.title}","${s.classId}","${s.mode}","${s.totalQuestions}","${s.avgScore}","${s.status || 'Selesai'}"\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `rekap_laporan_pai_${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // 16. EXPOSED GLOBAL APP CONTROLLER
+  window.PAIApp = {
+    closeModal: closeModal,
+    switchView: switchView,
+    
+    // Student Actions
+    editStudent: function (id) {
+      const st = appState.students.find(s => s.id === id);
+      if (!st) return;
+      document.getElementById('modalStudentTitle').textContent = 'Edit Data Siswa';
+      document.getElementById('studentEditId').value = st.id;
+      document.getElementById('inputStudentClass').value = st.classId;
+      document.getElementById('inputStudentNis').value = st.nis;
+      document.getElementById('inputStudentName').value = st.name;
+      openModal('modalStudent');
+    },
+
+    deleteStudent: function (id) {
+      const st = appState.students.find(s => s.id === id);
+      confirmAction(`Hapus siswa "${st ? st.name : 'ini'}" dari basis data kelas?`, () => {
+        appState.students = appState.students.filter(s => s.id !== id);
+        saveState();
+        renderClassesView();
+        showToast('Data siswa berhasil dihapus.');
+      });
+    },
+
+    deleteClass: function (classIdOrName) {
+      const cls = appState.classes.find(c => c.id === classIdOrName || c.name === classIdOrName);
+      if (!cls) return;
+
+      if (appState.classes.length <= 1) {
+        showToast('Tidak dapat menghapus: Minimal harus ada 1 kelas aktif!', true);
+        return;
+      }
+
+      const studentsInClass = appState.students.filter(s => s.classId === cls.name);
+      const studentCount = studentsInClass.length;
+      const warningText = studentCount > 0 
+        ? `PERINGATAN: Terdapat ${studentCount} orang siswa di kelas ini yang juga akan terhapus secara otomatis.` 
+        : 'Tidak ada data siswa yang tercatat di kelas ini.';
+
+      confirmAction(`Apakah Anda yakin ingin menghapus "${cls.name}"? ${warningText}`, () => {
+        appState.classes = appState.classes.filter(c => c.id !== cls.id);
+        appState.students = appState.students.filter(s => s.classId !== cls.name);
+
+        if (activeClassFilter === cls.name) {
+          activeClassFilter = appState.classes[0]?.name || '';
+        }
+        if (appState.settings.defaultClass === cls.name) {
+          appState.settings.defaultClass = appState.classes[0]?.name || '';
+        }
+
+        saveState();
+        syncAllClassDropdowns();
+        renderClassesView();
+        renderDashboard();
+        showToast(`Kelas "${cls.name}" berhasil dihapus.`);
+      });
+    },
+
+    deleteCurrentActiveClass: function () {
+      const cls = appState.classes.find(c => c.name === activeClassFilter);
+      if (cls) {
+        window.PAIApp.deleteClass(cls.id);
+      } else {
+        showToast('Tidak ada kelas aktif yang dipilih.', true);
+      }
+    },
+
+    // Question Actions
+    toggleQuestionSelect: function (id) {
+      if (selectedQuestionIds.has(id)) selectedQuestionIds.delete(id);
+      else selectedQuestionIds.add(id);
+      renderQuestionsView();
+    },
+
+    toggleStudioQuestionSelect: function (id) {
+      if (selectedQuestionIds.has(id)) selectedQuestionIds.delete(id);
+      else selectedQuestionIds.add(id);
+      renderGameStudio();
+    },
+
+    editQuestion: function (id) {
+      const q = appState.questions.find(item => item.id === id);
+      if (!q) return;
+      document.getElementById('modalQuestionTitle').textContent = 'Edit Soal';
+      document.getElementById('questionEditId').value = q.id;
+      document.getElementById('inputQClass').value = q.classId;
+      document.getElementById('inputQTopic').value = q.topic || '';
+      document.getElementById('inputQType').value = q.type || 'pilihan_ganda';
+      document.getElementById('inputQDifficulty').value = q.difficulty || 'Sedang';
+      document.getElementById('inputQText').value = q.question;
+      
+      const optWrap = document.getElementById('qOptionsWrapper');
+      if (q.type === 'benar_salah') {
+        optWrap.style.display = 'none';
+      } else {
+        optWrap.style.display = 'block';
+        document.getElementById('inputQOptA').value = q.options?.[0] || '';
+        document.getElementById('inputQOptB').value = q.options?.[1] || '';
+        document.getElementById('inputQOptC').value = q.options?.[2] || '';
+        document.getElementById('inputQOptD').value = q.options?.[3] || '';
+      }
+      
+      document.getElementById('inputQKey').value = q.key || 'A';
+      document.getElementById('inputQExplanation').value = q.explanation || '';
+      openModal('modalQuestion');
+    },
+
+    deleteQuestion: function (id) {
+      confirmAction('Apakah Anda yakin ingin menghapus butir soal ini dari Bank Soal?', () => {
+        appState.questions = appState.questions.filter(q => q.id !== id);
+        selectedQuestionIds.delete(id);
+        saveState();
+        renderQuestionsView();
+        showToast('Soal berhasil dihapus.');
+      });
+    },
+
+    onQuestionTypeChange: function () {
+      const type = document.getElementById('inputQType').value;
+      const wrap = document.getElementById('qOptionsWrapper');
+      const keySelect = document.getElementById('inputQKey');
+      if (type === 'benar_salah') {
+        wrap.style.display = 'none';
+        keySelect.innerHTML = `
+          <option value="A">Pilihan A (Benar)</option>
+          <option value="B">Pilihan B (Salah)</option>
+        `;
+      } else {
+        wrap.style.display = 'block';
+        keySelect.innerHTML = `
+          <option value="A">Pilihan A</option>
+          <option value="B">Pilihan B</option>
+          <option value="C">Pilihan C</option>
+          <option value="D">Pilihan D</option>
+        `;
+      }
+    },
+
+    deleteMaterial: function (id) {
+      confirmAction('Hapus materi ini dari katalog pembelajaran?', () => {
+        appState.materials = appState.materials.filter(m => m.id !== id);
+        saveState();
+        renderMaterialsView();
+        showToast('Materi berhasil dihapus.');
+      });
+    },
+
+    launchQuizFromMaterial: function (classId, title) {
+      switchView('gamestudio');
+      document.getElementById('gameConfigClass').value = classId;
+      document.getElementById('gameConfigTitle').value = `Kuis: ${title}`;
+      renderGameStudio();
+    },
+
+    deleteSessionRecord: function (id) {
+      confirmAction('Hapus catatan riwayat sesi ini?', () => {
+        appState.sessions = appState.sessions.filter(s => s.id !== id);
+        saveState();
+        renderReportsView();
+        showToast('Catatan riwayat dihapus.');
+      });
+    },
+
+    addTeamPoint: function (teamIdx, delta) {
+      if (activeLiveSession && activeLiveSession.battleTeams[teamIdx]) {
+        activeLiveSession.battleTeams[teamIdx].score += delta;
+        document.getElementById(`teamScore${teamIdx + 1}`).textContent = activeLiveSession.battleTeams[teamIdx].score;
+        playSound('correct');
+      }
+    },
+
+    switchAiTab: function (tabKey) {
+      ['quiz', 'activity', 'remedial', 'summary'].forEach(k => {
+        document.getElementById(`aiPanel${k.charAt(0).toUpperCase() + k.slice(1)}`).style.display = k === tabKey ? 'block' : 'none';
+        const tabBtn = document.getElementById(`tabAi${k.charAt(0).toUpperCase() + k.slice(1)}`);
+        if (tabBtn) {
+          if (k === tabKey) tabBtn.classList.add('active', 'btn-primary');
+          else tabBtn.classList.remove('active', 'btn-primary');
+        }
+      });
+    }
+  };
+
+  // 17. EVENT LISTENERS INITIALIZATION
+  document.addEventListener('DOMContentLoaded', function () {
+    loadState();
+    syncAllClassDropdowns();
+
+    // Set Live local date
+    const dateOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = new Date().toLocaleDateString('id-ID', dateOpts);
+    const dateEl = document.getElementById('currentDateDisplay');
+    if (dateEl) dateEl.textContent = dateStr;
+
+    // Sidebar navigation clicks
+    document.querySelectorAll('#sidebarNav .nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const view = btn.getAttribute('data-view');
+        if (view) switchView(view);
+      });
+    });
+
+    // Mobile drawer toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('appSidebar');
+    if (mobileBtn && sidebar) {
+      mobileBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+    }
+
+    // Header Quick Buttons
+    document.getElementById('quickStartGameBtn')?.addEventListener('click', () => switchView('gamestudio'));
+    document.getElementById('btnDashNewQuiz')?.addEventListener('click', () => switchView('gamestudio'));
+    document.getElementById('btnDashAddQuestion')?.addEventListener('click', () => {
+      switchView('questions');
+      openModal('modalQuestion');
+    });
+    document.getElementById('btnDashAiAssistant')?.addEventListener('click', () => switchView('aiassistant'));
+    document.getElementById('btnDashViewAllReports')?.addEventListener('click', () => switchView('reports'));
+    document.getElementById('btnAboutGoDashboard')?.addEventListener('click', () => switchView('dashboard'));
+
+    // Modal Confirmation Dialog Confirm Click
+    document.getElementById('btnExecuteDelete')?.addEventListener('click', () => {
+      if (typeof deletePendingCallback === 'function') {
+        deletePendingCallback();
+        deletePendingCallback = null;
+      }
+      closeModal('modalConfirmDelete');
+    });
+
+    // Student Modals & Actions
+    document.getElementById('btnOpenAddStudentModal')?.addEventListener('click', () => {
+      document.getElementById('modalStudentTitle').textContent = 'Tambah Siswa Baru';
+      document.getElementById('studentEditId').value = '';
+      document.getElementById('inputStudentNis').value = '';
+      document.getElementById('inputStudentName').value = '';
+      openModal('modalStudent');
+    });
+
+    document.getElementById('btnSaveStudent')?.addEventListener('click', () => {
+      const editId = document.getElementById('studentEditId').value;
+      const classId = document.getElementById('inputStudentClass').value;
+      const nis = document.getElementById('inputStudentNis').value.trim();
+      const name = document.getElementById('inputStudentName').value.trim();
+
+      if (!nis || !name) {
+        showToast('NIS dan Nama siswa wajib diisi!', true);
+        return;
+      }
+
+      if (editId) {
+        const st = appState.students.find(s => s.id === editId);
+        if (st) {
+          st.classId = classId;
+          st.nis = nis;
+          st.name = name;
+        }
+      } else {
+        appState.students.push({
+          id: 's-' + Date.now(),
+          classId: classId,
+          nis: nis,
+          name: name,
+          xp: 100,
+          badges: ['Sahabat Baru']
+        });
+      }
+
+      saveState();
+      closeModal('modalStudent');
+      renderClassesView();
+      showToast('Data siswa berhasil disimpan.');
+    });
+
+    document.getElementById('searchStudentInput')?.addEventListener('input', renderClassesView);
+    document.getElementById('btnExportStudentsCsv')?.addEventListener('click', exportStudentsCsv);
+
+    // Class Modal
+    document.getElementById('btnOpenAddClassModal')?.addEventListener('click', () => {
+      document.getElementById('inputClassName').value = '';
+      openModal('modalClass');
+    });
+
+    document.getElementById('btnSaveClass')?.addEventListener('click', () => {
+      const name = document.getElementById('inputClassName').value.trim();
+      if (!name) {
+        showToast('Nama kelas tidak boleh kosong!', true);
+        return;
+      }
+      if (appState.classes.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        showToast('Nama kelas sudah ada, gunakan nama lain!', true);
+        return;
+      }
+      appState.classes.push({ id: 'c-' + Date.now(), name: name, desc: 'Kelas SDN 32' });
+      activeClassFilter = name;
+      saveState();
+      syncAllClassDropdowns();
+      closeModal('modalClass');
+      renderClassesView();
+      renderDashboard();
+      showToast(`Kelas "${name}" berhasil ditambahkan.`);
+    });
+
+    // Material Actions
+    document.getElementById('btnOpenAddMaterialModal')?.addEventListener('click', () => {
+      document.getElementById('inputMatTitle').value = '';
+      document.getElementById('inputMatSummary').value = '';
+      document.getElementById('inputMatNotes').value = '';
+      openModal('modalMaterial');
+    });
+
+    document.getElementById('btnSaveMaterial')?.addEventListener('click', () => {
+      const cls = document.getElementById('inputMatClass').value;
+      const cat = document.getElementById('inputMatCategory').value;
+      const title = document.getElementById('inputMatTitle').value.trim();
+      const summary = document.getElementById('inputMatSummary').value.trim();
+      const notes = document.getElementById('inputMatNotes').value.trim();
+
+      if (!title || !summary) {
+        showToast('Judul dan ringkasan konsep wajib diisi!', true);
+        return;
+      }
+
+      appState.materials.push({
+        id: 'm-' + Date.now(),
+        classId: cls,
+        category: cat,
+        title: title,
+        summary: summary,
+        notes: notes
+      });
+
+      saveState();
+      closeModal('modalMaterial');
+      renderMaterialsView();
+      showToast('Materi PAI berhasil ditambahkan.');
+    });
+
+    document.getElementById('searchMaterialInput')?.addEventListener('input', renderMaterialsView);
+    document.getElementById('filterMaterialClass')?.addEventListener('change', renderMaterialsView);
+    document.getElementById('filterMaterialCategory')?.addEventListener('change', renderMaterialsView);
+
+    // Question Actions
+    document.getElementById('btnOpenAddQuestionModal')?.addEventListener('click', () => {
+      document.getElementById('modalQuestionTitle').textContent = 'Tambah Soal Baru';
+      document.getElementById('questionEditId').value = '';
+      document.getElementById('inputQTopic').value = '';
+      document.getElementById('inputQText').value = '';
+      document.getElementById('inputQOptA').value = '';
+      document.getElementById('inputQOptB').value = '';
+      document.getElementById('inputQOptC').value = '';
+      document.getElementById('inputQOptD').value = '';
+      document.getElementById('inputQExplanation').value = '';
+      window.PAIApp.onQuestionTypeChange();
+      openModal('modalQuestion');
+    });
+
+    document.getElementById('btnSaveQuestion')?.addEventListener('click', () => {
+      const editId = document.getElementById('questionEditId').value;
+      const classId = document.getElementById('inputQClass').value;
+      const topic = document.getElementById('inputQTopic').value.trim();
+      const type = document.getElementById('inputQType').value;
+      const diff = document.getElementById('inputQDifficulty').value;
+      const qText = document.getElementById('inputQText').value.trim();
+      const key = document.getElementById('inputQKey').value;
+      const exp = document.getElementById('inputQExplanation').value.trim();
+
+      if (!qText) {
+        showToast('Teks pertanyaan wajib diisi!', true);
+        return;
+      }
+
+      let options = [];
+      if (type === 'pilihan_ganda') {
+        const a = document.getElementById('inputQOptA').value.trim();
+        const b = document.getElementById('inputQOptB').value.trim();
+        const c = document.getElementById('inputQOptC').value.trim();
+        const d = document.getElementById('inputQOptD').value.trim();
+        if (!a || !b || !c || !d) {
+          showToast('Keempat opsi pilihan (A-D) wajib diisi lengkap!', true);
+          return;
+        }
+        options = [a, b, c, d];
+      } else {
+        options = ['Benar', 'Salah'];
+      }
+
+      if (editId) {
+        const q = appState.questions.find(item => item.id === editId);
+        if (q) {
+          q.classId = classId;
+          q.topic = topic;
+          q.type = type;
+          q.difficulty = diff;
+          q.question = qText;
+          q.options = options;
+          q.key = key;
+          q.explanation = exp;
+        }
+      } else {
+        appState.questions.push({
+          id: 'q-' + Date.now(),
+          classId: classId,
+          topic: topic,
+          type: type,
+          difficulty: diff,
+          question: qText,
+          options: options,
+          key: key,
+          explanation: exp,
+          points: 10,
+          verified: true
+        });
+      }
+
+      saveState();
+      closeModal('modalQuestion');
+      renderQuestionsView();
+      showToast('Soal berhasil disimpan ke Bank Soal.');
+    });
+
+    document.getElementById('searchQuestionInput')?.addEventListener('input', renderQuestionsView);
+    document.getElementById('filterQuestionClass')?.addEventListener('change', renderQuestionsView);
+    document.getElementById('filterQuestionDifficulty')?.addEventListener('change', renderQuestionsView);
+
+    document.getElementById('btnCreateGameFromSelected')?.addEventListener('click', () => {
+      if (selectedQuestionIds.size === 0) {
+        showToast('Centang setidaknya 1 soal terlebih dahulu!', true);
+        return;
+      }
+      switchView('gamestudio');
+    });
+
+    document.getElementById('btnExportQuestionsJson')?.addEventListener('click', () => {
+      exportDataAsJson(`bank_soal_pai_sdn32_${Date.now()}.json`, appState.questions);
+    });
+
+    document.getElementById('inputImportQuestionsJson')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].question) {
+            appState.questions = appState.questions.concat(parsed);
+            saveState();
+            renderQuestionsView();
+            showToast(`Berhasil mengimpor ${parsed.length} butir soal.`);
+          } else {
+            showToast('Struktur JSON soal tidak valid!', true);
+          }
+        } catch (err) {
+          showToast('File JSON rusak atau tidak terbaca.', true);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Game Studio Actions
+    document.getElementById('gameConfigClass')?.addEventListener('change', renderGameStudio);
+
+    document.getElementById('btnSelectAllClassQuestions')?.addEventListener('click', () => {
+      const cls = document.getElementById('gameConfigClass').value;
+      appState.questions.filter(q => q.classId === cls).forEach(q => selectedQuestionIds.add(q.id));
+      renderGameStudio();
+    });
+
+    document.getElementById('btnLaunchLiveGame')?.addEventListener('click', () => {
+      const cls = document.getElementById('gameConfigClass').value;
+      const title = document.getElementById('gameConfigTitle').value.trim() || 'Tantangan PAI Ceria';
+      const timerVal = document.getElementById('gameConfigTimer').value;
+      const feedback = document.getElementById('gameConfigFeedback').value;
+      const modeOpt = document.querySelector('input[name="gameMode"]:checked');
+      const mode = modeOpt ? modeOpt.value : 'quiz_challenge';
+
+      // Gather questions
+      let activeQuestions = appState.questions.filter(q => selectedQuestionIds.has(q.id) && q.classId === cls);
+      if (activeQuestions.length === 0) {
+        activeQuestions = appState.questions.filter(q => q.classId === cls).slice(0, 5);
+      }
+
+      if (activeQuestions.length === 0) {
+        showToast(`Belum ada soal untuk ${cls}. Tambahkan soal terlebih dahulu!`, true);
+        return;
+      }
+
+      startLiveGameSession({
+        title: title,
+        classId: cls,
+        mode: mode,
+        duration: timerVal,
+        feedbackMode: feedback,
+        questions: activeQuestions
+      });
+    });
+
+    // Live Classroom Navigation Controls
+    document.getElementById('btnLiveNextQuestion')?.addEventListener('click', nextLiveQuestion);
+    document.getElementById('btnLivePrevQuestion')?.addEventListener('click', prevLiveQuestion);
+    document.getElementById('btnLiveRevealAnswer')?.addEventListener('click', revealLiveAnswer);
+    document.getElementById('btnLivePauseTimer')?.addEventListener('click', () => {
+      if (!activeLiveSession) return;
+      activeLiveSession.isPaused = !activeLiveSession.isPaused;
+      const btn = document.getElementById('btnLivePauseTimer');
+      btn.textContent = activeLiveSession.isPaused ? 'Lanjutkan Timer' : 'Jeda Timer';
+    });
+    document.getElementById('btnExitLiveSession')?.addEventListener('click', () => {
+      confirmAction('Keluar dari sesi Live Classroom? Sesi yang belum selesai tidak akan tersimpan penuh.', () => {
+        clearInterval(liveTimerInterval);
+        switchView('gamestudio');
+      });
+    });
+    document.getElementById('btnLiveSaveAndReview')?.addEventListener('click', () => switchView('reports'));
+    document.getElementById('btnLiveRestartSession')?.addEventListener('click', () => switchView('gamestudio'));
+
+    // Toggle Fullscreen
+    document.getElementById('btnToggleFullScreen')?.addEventListener('click', () => {
+      const container = document.getElementById('liveContainer');
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    // Keyboard support for Live Classroom (1-4 or A-D)
+    window.addEventListener('keydown', (e) => {
+      if (activeView !== 'liveclassroom' || !activeLiveSession) return;
+      const keyMap = { '1': 'A', 'a': 'A', 'A': 'A', '2': 'B', 'b': 'B', 'B': 'B', '3': 'C', 'c': 'C', 'C': 'C', '4': 'D', 'd': 'D', 'D': 'D' };
+      const chosen = keyMap[e.key];
+      if (chosen) {
+        const q = activeLiveSession.questions[activeLiveSession.currentIndex];
+        if (q) selectLiveAnswer(chosen, q.key, q.points || 10);
+      }
+    });
+
+    // Reports Actions
+    document.getElementById('btnPrintReportBtn')?.addEventListener('click', () => window.print());
+    document.getElementById('btnExportReportsCsv')?.addEventListener('click', exportReportsCsv);
+
+    // AI Assistant Actions
+    document.getElementById('btnSaveGeminiKey')?.addEventListener('click', () => {
+      const key = document.getElementById('inputGeminiApiKey').value.trim();
+      appState.settings.geminiApiKey = key;
+      saveState();
+      renderAiAssistant();
+      showToast('Kunci Gemini API berhasil disimpan secara lokal.');
+    });
+
+    document.getElementById('btnClearGeminiKey')?.addEventListener('click', () => {
+      appState.settings.geminiApiKey = '';
+      saveState();
+      renderAiAssistant();
+      showToast('Kunci Gemini API telah dihapus.');
+    });
+
+    document.getElementById('btnRunAiGenerateQuiz')?.addEventListener('click', generateAiQuiz);
+
+    document.getElementById('btnSaveAiQuizToBank')?.addEventListener('click', () => {
+      if (currentAiDraftQuestions.length === 0) return;
+      appState.questions = appState.questions.concat(currentAiDraftQuestions);
+      saveState();
+      currentAiDraftQuestions = [];
+      document.getElementById('aiQuizResultsContainer').style.display = 'none';
+      showToast('Seluruh draf soal AI berhasil dipindahkan ke Bank Soal.');
+      renderQuestionsView();
+    });
+
+    // AI Tab 2: Activity Planner
+    document.getElementById('btnRunAiGenerateActivity')?.addEventListener('click', async () => {
+      const topic = document.getElementById('aiActivityTopic').value;
+      const duration = document.getElementById('aiActivityDuration').value;
+      const out = document.getElementById('aiActivityOutput');
+
+      try {
+        out.style.display = 'block';
+        out.innerHTML = '<em>Sedang merancang aktivitas ajar ceria bersama Gemini...</em>';
+        const prompt = `Rancanglah kegiatan pembelajaran PAI SD yang aktif dan ramah anak untuk materi "${topic}" dengan durasi ${duration}. Sertakan: 1) Ice breaking / Kegiatan Pembuka, 2) Permainan Berkelompok, 3) Pertanyaan Diskusi Hikmah, 4) Refleksi dan Doa Penutup. Gunakan bahasa Indonesia yang santun dan praktis.`;
+        const res = await callGeminiApi(prompt);
+        out.innerHTML = `<div style="white-space: pre-wrap;">${escapeHtml(res)}</div>`;
+      } catch (err) {
+        out.innerHTML = `<div style="color: var(--danger-dark);"><strong>Gagal:</strong> ${escapeHtml(err.message)}</div>`;
+      }
+    });
+
+    // AI Tab 3: Remedial Generator
+    document.getElementById('btnRunAiGenerateRemedial')?.addEventListener('click', async () => {
+      const topic = document.getElementById('aiRemedialTopic').value;
+      const out = document.getElementById('aiRemedialOutput');
+
+      try {
+        out.style.display = 'block';
+        out.innerHTML = '<em>Sedang menyusun latihan remidial suportif...</em>';
+        const prompt = `Buatkan 3 soal remidial PAI SD dengan pendekatan bertahap (mudah ke sedang) untuk materi "${topic}". Berikan bimbingan tips di setiap soal agar siswa termotivasi dan tidak merasa putus asa.`;
+        const res = await callGeminiApi(prompt);
+        out.innerHTML = `<div style="white-space: pre-wrap;">${escapeHtml(res)}</div>`;
+      } catch (err) {
+        out.innerHTML = `<div style="color: var(--danger-dark);"><strong>Gagal:</strong> ${escapeHtml(err.message)}</div>`;
+      }
+    });
+
+    // AI Tab 4: Summary Generator
+    document.getElementById('btnRunAiGenerateSummary')?.addEventListener('click', async () => {
+      const out = document.getElementById('aiSummaryOutput');
+      try {
+        out.style.display = 'block';
+        out.innerHTML = '<em>Sedang menganalisis capaian agregat...</em>';
+        const sessionsData = appState.sessions.map(s => `${s.title} (${s.classId}): Rata-rata ${s.avgScore}`).join('; ');
+        const prompt = `Berikut adalah data rekap nilai sesi kuis PAI agregat: [${sessionsData}]. Berikan analisis pedagogis singkat: 1) Aspek positif pencapaian siswa, 2) Rekomendasi metode penguatan ajar berikutnya tanpa menyalahkan siswa. Jangan sebut nama pribadi siswa.`;
+        const res = await callGeminiApi(prompt);
+        out.innerHTML = `<div style="white-space: pre-wrap;">${escapeHtml(res)}</div>`;
+      } catch (err) {
+        out.innerHTML = `<div style="color: var(--danger-dark);"><strong>Gagal:</strong> ${escapeHtml(err.message)}</div>`;
+      }
+    });
+
+    // Settings Actions
+    document.getElementById('btnSaveGeneralSettings')?.addEventListener('click', () => {
+      appState.settings.schoolName = document.getElementById('settingSchoolName').value.trim();
+      appState.settings.defaultClass = document.getElementById('settingDefaultClass').value;
+      appState.settings.audioEnabled = document.getElementById('settingEnableAudio').checked;
+      appState.settings.animationEnabled = document.getElementById('settingEnableAnimation').checked;
+      saveState();
+      showToast('Pengaturan umum berhasil disimpan.');
+    });
+
+    document.getElementById('btnExportFullBackupJson')?.addEventListener('click', () => {
+      exportDataAsJson(`cadangan_lengkap_pai_quest_${Date.now()}.json`, appState);
+    });
+
+    document.getElementById('inputRestoreBackupJson')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (parsed && parsed.classes && parsed.questions) {
+            appState = parsed;
+            saveState();
+            switchView('dashboard');
+            showToast('Cadangan berhasil dipulihkan!');
+          } else {
+            showToast('File JSON bukan cadangan PAI Quest yang valid.', true);
+          }
+        } catch (err) {
+          showToast('File cadangan rusak atau tidak dapat dibaca.', true);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('btnResetDemoData')?.addEventListener('click', () => {
+      confirmAction('Kembalikan aplikasi ke data simulasi demo bawaan? Semua data lokal Anda akan disetel ulang.', () => {
+        appState = JSON.parse(JSON.stringify(INITIAL_DEMO_DATA));
+        saveState();
+        switchView('dashboard');
+        showToast('Data demo berhasil disetel ulang.');
+      });
+    });
+
+    document.getElementById('btnClearAllData')?.addEventListener('click', () => {
+      confirmAction('HAPUS SELURUH DATA APLIKASI? Ini akan mengosongkan semua kelas, siswa, bank soal, dan riwayat.', () => {
+        appState = {
+          settings: { teacherName: 'Firmansyah,S.H Gr', schoolName: 'SDN 32 Rantau Bayur', defaultClass: 'Kelas IV', audioEnabled: true, animationEnabled: true, geminiApiKey: '' },
+          classes: [],
+          students: [],
+          materials: [],
+          questions: [],
+          sessions: []
+        };
+        saveState();
+        switchView('dashboard');
+        showToast('Seluruh data aplikasi telah dihapus.');
+      });
+    });
+
+    // Initial render
+    renderDashboard();
+  });
+})();
+</script>
+</body>
+</html>
